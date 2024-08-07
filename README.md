@@ -93,6 +93,10 @@
      reg 0 a2
      ```
      ![Output](images/5.png)
+  - lui - Load Upper immediate.
+  - We can observe the value of a2 is changed.
+  - Similarily, we can also observe the working of the other RISCV instruction i.e addi
+  - To observe the working of addi, first move the pc to 100b8(which means program is executed till the instruction 100b8).Then observe the change in the value of sp(-16 in decimal is 10 in hexadecimal).We can observe the value of sp is decresed by 10.
     
     
     
