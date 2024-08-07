@@ -4,7 +4,7 @@
 In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
 ### Tasks
 1.  Writing a simple C program to calculate sum of n numbers and execute the program using GCC.
-2.  Execute the same C program using RISCV compiler.
+2.  Execute the same C program using RISCV compiler and compare the results.
 ## Procedure
 ### Task-1
 1. Create a new file(sum1ton.c) in home directory.(Run the command 'cd' before creating the file to make sure you are in home directory).
@@ -47,11 +47,12 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
   - 0000000000010184 is the address where the main function starts.
   - To known the number of instructions it takes to execute we subtract 0000000000010184(which is the next function) from 00000000000101c0 and divide it by 4(Since each instruction takes 4 bytes).
   - In this case it take 15 instructions.
-  - We can reduce the number of instructions it takes using the below command.
+  - We can reduce the number of instructions it takes by compiling the code using the below command.
      ```
      riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
      ```
      ![Output of riscv](images/riscvfast_op.jpg)
+    - Run the code using the same code as above.
     - In the above case it is taking only 12 instructions to execute.
   
      
