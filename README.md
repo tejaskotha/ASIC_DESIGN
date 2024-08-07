@@ -3,7 +3,7 @@
  <summary><strong>Lab1</strong></summary>
  
  ### Description
-   In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
+   In this lab we compile a simple C program using GCC and RISCV compliers.
  ### Tasks
 1.  Writing a simple C program to calculate sum of n numbers and execute the program using GCC.
 2.  Execute the same C program using RISCV compiler and compare the results.
@@ -61,7 +61,19 @@
 <details>
  <summary><strong>Lab2</strong></summary>
 
- 
+  ### Description
+  Comparing the GCC compiled output with RISCV compiled output
+  ### Procedure
+  1. Compile the code using the below command.
+     ```
+     riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
+     ```
+  2. Run the code
+     ```
+     spike pk sum1ton.o
+     ```
+  3. Output
+     ![Output of riscv](images/3.jpg)
 </details>
  
   
