@@ -1,8 +1,10 @@
 # ASIC_DESIGN
-## Lab-1
-### Description
-In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
-### Tasks
+<details>
+ <summary><strong>Lab1</strong></summary>
+ 
+ ### Description
+   In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
+ ### Tasks
 1.  Writing a simple C program to calculate sum of n numbers and execute the program using GCC.
 2.  Execute the same C program using RISCV compiler and compare the results.
 ## Procedure
@@ -55,6 +57,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
     - Run the code using the same code as above.
     - In the above case it is taking only 12 instructions to execute.
 
+</details>
  
   
      
