@@ -52,6 +52,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      riscv64-unknown-elf-gcc -Ofast -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
      ```
      ![Output of riscv](images/riscvfast_op.jpg)
+    - In the above case it is taking only 12 instructions to execute.
   
      
 
