@@ -1,7 +1,7 @@
 # ASIC_DESIGN
 <details>
  <summary>## Lab-1</summary>
-## Lab-1
+<!-- ## Lab-1 -->
 ### Description
 In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
 ### Tasks
