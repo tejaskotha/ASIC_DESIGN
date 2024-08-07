@@ -22,9 +22,9 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    }
    ```
    ### To compile the code using GCC
-   `gcc sum1ton.c`
+   ```gcc sum1ton.c```
 
    ### To Run the code
-   `./a.out`
+   ```./a.out```
    
    
