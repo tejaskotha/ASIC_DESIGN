@@ -33,7 +33,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    ### Output
    ![Output of the code](images/1.jpg)
 ### Task-2
---- Compliling and verifying the same C code using RISC-V compiler
+- Compliling and verifying the same C code using RISC-V compiler
 1. 
 
    
