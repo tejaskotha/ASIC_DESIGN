@@ -31,7 +31,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    ./a.out
    ```
    ### Output
-   ![Output of the code](images/1.jpg)
+   ![Output of the code](images/gcc_op.jpg)
 ### Task-2 : Compliling and verifying the same C code using RISC-V compiler
   1. Compile the code using RISV using the below command
      ```
@@ -41,6 +41,8 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      ```
      riscv64-unknown-elf-objdump -d sum1ton.o | less
      ```
+  3. Output
+     ![Ouput of RISCV](images/risc_op.jpg)
      
 
    
