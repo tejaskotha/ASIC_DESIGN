@@ -58,6 +58,11 @@
     - In the above case it is taking only 12 instructions to execute.
 
 </details>
+<details>
+ <summary><strong>Lab2</strong></summary>
+
+ 
+</details>
  
   
      
