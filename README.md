@@ -5,7 +5,6 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
 ### Tasks
 1.  Writing a simple C program to calculate sum of n numbers and execute the program using GCC.
 2.  Execute the same C program using RISCV compiler.
-3.  Compare the results.
 ## Procedure
 ### Task-1
 1. Create a new file(sum1ton.c) in home directory.(Run the command 'cd' before creating the file to make sure you are in home directory).
@@ -33,6 +32,9 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    ```
    ### Output
    ![Output of the code](images/1.jpg)
-   
+### Task-2
+--- Compliling and verifying the same C code using RISC-V compiler
+1. 
+
    
    
