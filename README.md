@@ -21,7 +21,6 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      return 0;
    }
    ### To compile the code using GCC
-   ### Code
-   ```
+   ```c
    gcc sum1ton.c
    
