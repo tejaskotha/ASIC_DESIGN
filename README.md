@@ -20,3 +20,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      printf("Sum of numbers from 1 to %d is %d\n",n,sum);
      return 0;
    }
+   ### To compile the code using GCC
+   ```
+   gcc sum1ton.c
+   
