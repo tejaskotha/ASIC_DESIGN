@@ -1,4 +1,5 @@
 # ASIC_DESIGN
+<details>
 # Lab-1
 ### Description
 In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
@@ -54,6 +55,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      ![Output of riscv](images/riscvfast_op.jpg)
     - Run the code using the same code as above.
     - In the above case it is taking only 12 instructions to execute.
+ </details>
   
      
 
