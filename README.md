@@ -73,7 +73,18 @@
      spike pk sum1ton.o
      ```
   3. Output
-     ![Output of riscv](images/3.jpg)
+     ![Output of riscv](images/3.png)
+  ### Debugging the Code
+  - We debug the code using the below command
+    ```
+    spike -d pk sum1ton.o
+    ```
+  - First run the RISCV code(`riscv64-unknown-elf-objdump -d sum1ton.o | less`).We can get the location of main function from where we can debug the code line by line.
+    #### Output
+    ![Output](images/4.png)
+    
+    
+    
 </details>
  
   
