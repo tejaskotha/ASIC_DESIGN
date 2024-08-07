@@ -34,7 +34,10 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    ![Output of the code](images/1.jpg)
 ### Task-2
 - Compliling and verifying the same C code using RISC-V compiler
-1. 
+  1.Compile the code using RISV using the below command
+  ```
+  riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o sum1ton.o sum1ton.c
+  ``` 
 
    
    
