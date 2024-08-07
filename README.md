@@ -43,6 +43,11 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
      ```
   3. Output
      ![Ouput of RISCV](images/riscv_op.jpg)
+  ### Explanation of the Output
+  - 0000000000010184 is the address where the main function starts.
+  - To known the number of instructions it takes to execute we subtract 0000000000010184(which is the next function) from 00000000000101c0 and divide it by 4(Since each instruction takes 4 bytes).
+  - In this case it take 15 instructions.
+  
      
 
    
