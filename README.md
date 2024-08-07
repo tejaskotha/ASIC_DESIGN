@@ -32,6 +32,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
    ./a.out
    ```
    ### Output
+   (images/1.jpg)
    
    
    
