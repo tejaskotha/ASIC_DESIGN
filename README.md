@@ -83,6 +83,17 @@
     #### Output
     ![Output](images/4.png)
     
+  - Use the below command to take pc to the main function .(100b0 is the starting point of the main function).
+    ```
+    until pc 0 100b0
+    ```
+  - We can know the initial value of a2 before executing the instruction and obsereve the change in the value of a2 after executing the instruction.
+  - To know the value of a2 use the below command.Press enter the run the following instructions.
+     ```
+     reg 0 a2
+     ```
+     ![Output](images/5.png)
+    
     
     
 </details>
