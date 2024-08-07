@@ -1,12 +1,12 @@
 # ASIC_DESIGN
-## Lab-1
+# Lab-1
 ### Description
 In this lab we compile a simple C program using GCC and RISCV compliers.Then we compare the outputs
 ### Tasks
 1.  Writing a simple C program to calculate sum of n numbers and execute the program using GCC.
 2.  Execute the same C program using RISCV compiler and compare the results.
 ## Procedure
-### Task-1
+ ### Task-1
 1. Create a new file(sum1ton.c) in home directory.(Run the command 'cd' before creating the file to make sure you are in home directory).
 2. We use leafpad as texteditor to write the code.
    ### Code
