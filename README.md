@@ -10,7 +10,7 @@ In this lab we compile a simple C program using GCC and RISCV compliers.Then we 
 1. Create a new file(sum1ton.c) in home directory.(Run the command 'cd' before creating the file to make sure you are in home directory).
 2. We use leafpad as texteditor to write the code.
    ### Code
-   ```
+   ```c
    #include <stdio.h>
    int main(){
      int i,sum=0,n=100;
