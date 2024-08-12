@@ -108,7 +108,7 @@
 
    ## Description
    To identify various RISC-V instruction type (R, I, S, B, U, J) and determine exact 32-bit instruction code in the instruction type format for below RISC-V instructions. 
-   ## Procedure
+   ## Theory
    - The RISC-V architecture employs six main instruction formats—R-Type, I-Type, S-Type, B-Type, U-Type, and J-Type—each used for specific operations like arithmetic, logic, immediate value processing, branching, memory access, and jumps respectively.
   - Instruction format for different RISC-V instructions:
   
