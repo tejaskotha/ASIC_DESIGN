@@ -99,9 +99,171 @@
   - To observe the working of addi, first move the pc to 100b8(which means program is executed till the instruction 100b8).Then observe the change in the value of sp(-16 in decimal is 10 in hexadecimal).We can observe the value of sp is decreased by 10.
     ![output](images/6.png)
 ### References
-[RISCV-INSTRUCTIONS](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf)
+[RISCV-INSTRUCTIONS](https://riscv.org/wp-content/uploads/2017/05/riscv-spec-v2.2.pdf) 
+</details>
+
+
+<details>
+ <summary><strong>Lab-3</strong></summary>.
+
+   ### Instruction Types Covered
+   
+   - **R-type**: Register-register arithmetic and logical operations.
+   - **I-type**: Immediate arithmetic, logical operations, and load instructions.
+   - **S-type**: Store instructions.
+   - **B-type**: Conditional branch instructions.
+   
+   ## Detailed Instruction Breakdown
+
+  -  ```ADD r6, r7, r8```
+     - **Opcode for ADD**: `0110011`
+     - **rd** = `r6` = `00110`
+     - **rs1** = `r7` = `00111`
+     - **rs2** = `r8` = `01000`
+     - **func3** = `000`
+     - **func7** = `0000000`
+     - **Instruction Type**: R Type
+     - **32-bit Instruction**: `0000000_01000_00111_000_00110_0110011`
+     - **Hexadecimal representation**: `0x00F3_3033`
     
+  -  ```SUB r8, r6, r7```
+     - **Opcode for SUB**: `0110011`
+     - **rd** = `r8` = `01000`
+     - **rs1** = `r6` = `00110`
+     - **rs2** = `r7` = `00111`
+     - **func3** = `000`
+     - **func7** = `0100000`
+     - **Instruction Type**: R Type
+     - **32-bit Instruction**: `0100000_00111_00110_000_01000_0110011`
+     - **Hexadecimal representation**: `0x40C3_4033`
     
+  - ```AND r7, r6, r8```
+    
+     - **Opcode for AND**: `0110011`
+     - **rd** = `r7` = `00111`
+     - **rs1** = `r6` = `00110`
+     - **rs2** = `r8` = `01000`
+     - **func3** = `111`
+     - **func7** = `0000000`
+     - **Instruction Type**: R Type
+     - **32-bit Instruction**: `0000000_01000_00110_111_00111_0110011`
+     - **Hexadecimal representation**: `0x00F7_7033`
+   
+  - ```OR r8, r7, r5```
+     - **Opcode for OR**: `0110011`
+     - **rd** = `r8` = `01000`
+     - **rs1** = `r7` = `00111`
+     - **rs2** = `r5` = `00101`
+     - **func3** = `110`
+     - **func7** = `0000000`
+     - **Instruction Type**: R Type
+     - **32-bit Instruction**: `0000000_00101_00111_110_01000_0110011`
+     - **Hexadecimal representation**: `0x00A7_4033`
+   
+  - ```XOR r8, r6, r4```
+    - **Opcode for XOR**: `0110011`
+    - **rd** = `r8` = `01000`
+    - **rs1** = `r6` = `00110`
+    - **rs2** = `r4` = `00100`
+    - **func3** = `100`
+    - **func7** = `0000000`
+    - **Instruction Type**: R Type
+    - **32-bit Instruction**: `0000000_00100_00110_100_01000_0110011`
+    - **Hexadecimal representation**: `0x0046_4033`
+   
+  -  ```SLT r10, r2, r4```
+     - **Opcode for SLT**: `0110011`
+     - **rd** = `r10` = `01010`
+     - **rs1** = `r2` = `00010`
+     - **rs2** = `r4` = `00100`
+     - **func3** = `010`
+     - **func7** = `0000000`
+     - **Instruction Type**: R Type
+     - **32-bit Instruction**: `0000000_00100_00010_010_01010_0110011`
+     - **Hexadecimal representation**: `0x0041_5033`
+     
+  - ```ADDI r12, r3, 5```
+   
+    - **Opcode for ADDI**: `0010011`
+    - **rd** = `r12` = `01100`
+    - **rs1** = `r3` = `00011`
+    - **imm[11:0]** = `000000000101`
+    - **func3** = `000`
+    - **Instruction Type**: I Type
+    - **32-bit Instruction**: `000000000101_00011_000_01100_0010011`
+    - **Hexadecimal representation**: `0x0051_93B3`
+   
+   - ```SW r3, r1, 4```
+   
+     - **Opcode for SW**: `0100011`
+     - **imm[11:5]** = `0000000`
+     - **rs2** = `r3` = `00011`
+     - **rs1** = `r1` = `00001`
+     - **imm[4:0]** = `00100`
+     - **func3** = `010`
+     - **Instruction Type**: S Type
+     - **32-bit Instruction**: `0000000_00011_00001_010_00100_0100011`
+     - **Hexadecimal representation**: `0x0030_2103`
+   
+  - ```SRL r16, r11, r2```
+   
+    - **Opcode for SRL**: `0110011`
+    - **rd** = `r16` = `10000`
+    - **rs1** = `r11` = `01011`
+    - **rs2** = `r2` = `00010`
+    - **func3** = `101`
+    - **func7** = `0000000`
+    - **Instruction Type**: R Type
+    - **32-bit Instruction**: `0000000_00010_01011_101_10000_0110011`
+    - **Hexadecimal representation**: `0x002B_5033`
+   
+  - ```BNE r0, r1, 20```
+   
+    - **Opcode for BNE**: `1100011`
+    - **imm[12|10:5]** = `0000010`
+    - **rs2** = `r1` = `00001`
+    - **rs1** = `r0` = `00000`
+    - **imm[4:1|11]** = `10100`
+    - **func3** = `001`
+    - **Instruction Type**: B Type
+    - **32-bit Instruction**: `0000010_00001_00000_001_10100_1100011`
+    - **Hexadecimal representation**: `0x2001_2483`
+   
+  - ```BEQ r0, r0, 15```
+   
+    - **Opcode for BEQ**: `1100011`
+    - **imm[12|10:5]** = `0000000`
+    - **rs2** = `r0` = `00000`
+    - **rs1** = `r0` = `00000`
+    - **imm[4:1|11]** = `01111`
+    - **func3** = `000`
+    - **Instruction Type**: B Type
+    - **32-bit Instruction**: `0000000_00000_00000_000_01111_1100011`
+    - **Hexadecimal representation**: `0x0000_03F3`
+   
+  - ```LW r13, r11, 2```
+   
+    - **Opcode for LW**: `0000011`
+    - **rd** = `r13` = `01101`
+    - **rs1** = `r11` = `01011`
+    - **imm[11:0]** = `000000000010`
+    - **func3** = `010`
+    - **Instruction Type**: I Type
+    - **32-bit Instruction**: `000000000010_01011_010_01101_0000011`
+    - **Hexadecimal representation**: `0x002B_4063`
+   
+  - ```SLL r15, r11, r2```
+    
+    - **Opcode for SLL**: `0110011`
+    - **rd** = `r15` = `01111`
+    - **rs1** = `r11` = `01011`
+    - **rs2** = `r2` = `00010`
+    - **func3** = `001`
+    - **func7** = `0000000`
+    - **Instruction Type**: R Type
+    - **32-bit Instruction**: `0000000_00010_01011_001_01111_0110011`
+    - **Hexadecimal representation**: `0x002B_3033`
+
 </details>
  
   
