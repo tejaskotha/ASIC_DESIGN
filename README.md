@@ -1,6 +1,6 @@
 # ASIC_DESIGN
 <details>
- <summary><strong>Lab1</strong></summary>
+ <summary><strong>Lab-1</strong></summary>
  
  ### Description
    In this lab we compile a simple C program using GCC and RISCV compliers.
@@ -58,8 +58,10 @@
     - In the above case it is taking only 12 instructions to execute.
 
 </details>
+
+
 <details>
- <summary><strong>Lab2</strong></summary>
+ <summary><strong>Lab-2</strong></summary>
 
   ### Description
   Comparing the GCC compiled output with RISCV compiled output
@@ -307,8 +309,10 @@
 | `LW r13, r11, 2`   | I    | `000000000010_01011_010_01101_0000011` | `0x002B_4063` |
 | `SLL r15, r11, r2` | R    | `0000000_00010_01011_001_01111_0110011` | `0x002B_3033` |
 
+</details>
 
-
+<details>
+<summary><strong>Lab-4</strong></summary>
 </details>
  
   
