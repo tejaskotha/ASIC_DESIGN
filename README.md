@@ -106,13 +106,25 @@
 <details>
  <summary><strong>Lab-3</strong></summary>.
 
-   ### Instruction Types Covered
-   
-   - **R-type**: Register-register arithmetic and logical operations.
-   - **I-type**: Immediate arithmetic, logical operations, and load instructions.
-   - **S-type**: Store instructions.
-   - **B-type**: Conditional branch instructions.
-   
+   ## Description
+   To identify various RISC-V instruction type (R, I, S, B, U, J) and determine exact 32-bit instruction code in the instruction type format for below RISC-V instructions. 
+  
+   ## Instructions
+   ```
+    ADD r6, r7, r8
+    SUB r8, r6, r7
+    AND r7, r6, r8
+    OR r8, r7, r5
+    XOR r8, r6, r4
+    SLT r10, r2, r4
+    ADDI r12, r3, 5
+    SW r3, r1, 4
+    SRL r16, r11, r2
+    BNE r0, r1, 20
+    BEQ r0, r0, 15
+    LW r13, r11, 2
+    SLL r15, r11, r2
+   ```
    ## Detailed Instruction Breakdown
 
   -  ```ADD r6, r7, r8```
