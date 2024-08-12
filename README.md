@@ -108,6 +108,8 @@
 
    ## Description
    To identify various RISC-V instruction type (R, I, S, B, U, J) and determine exact 32-bit instruction code in the instruction type format for below RISC-V instructions. 
+   ## Procedure
+   
   
    ## Instructions
    ```
