@@ -313,6 +313,108 @@
 
 <details>
 <summary><strong>Lab-4</strong></summary>
+ 
+ ## Description
+ Functional simulation experiment
+ ## Standard RISCV ISA AND Hardcoded ISA(based on given verilog code)
+ - In the Verilog code, each instruction type is assigned a unique opcode, and the func3 and func7 fields have distinct values compared to the standard RISC-V values. The func7 field is primarily used to differentiate immediate operations from other arithmetic functions; if it’s not serving this purpose, func7 is set to b'0 in the Verilog implementation.
+ - Below is the table with hardcoded 32-bit code using func3,func7 and opcodes from the given verilog code.
+
+| S.No | Instruction        | Hardcoded 32-bit Pattern             | Hardcoded Hexadecimal Pattern | 32-bit Pattern                        | Hexadecimal Pattern |
+|------|--------------------|--------------------------------------|--------------------------------|---------------------------------------|---------------------|
+| 1    | ADD r6,r7,r8        | 0000001_00011_00010_000_00001_0000000 | 0x02310080                     |0000000_01000_00111_000_00110_0110011 | 0x00838333          |
+| 2    | SUB r8,r6,r7        | 0000001_00010_00001_001_00011_0000000 | 0x02209180                     |0100000_00111_00110_000_01000_0110011 | 0x41C34033         |
+| 3    | AND r7, r6, r8      | 0000001_00011_00001_010_00010_0000000 | 0x0230A100                     |0000000_01000_00110_111_00111_0110011 | 0x00837333          |
+| 4    | OR r8, r7, r5       | 0000001_00101_00010_011_01000_0000000 | 0x02513400                     | 0000000_00101_00111_110_01000_0110011 | 0x0053C033          |
+| 5    | XOR r8, r6, r4      | 0000001_00100_00001_100_01000_0000000 | 0x0240C400                     | 0000000_00100_00110_100_01000_0110011 | 0x00434033          |
+| 6    | SLT r10, r2, r4     | 0000001_00100_00010_101_01010_0000000 | 0x02415500                     | 0000000_00100_00010_010_01010_0110011 | 0x00412333          |
+| 7    | ADDI r12, r3, 5     | 0000000_00011_00010_000_01100_0000000 | 0x00518600                     | 0000000_000101_00011_000_01100_0010011 | 0x00518613         |
+| 8    | SW r3, r1, 4        | 0000000_00001_00011_001_00100_0000001 | 0x00119201                     | 0000000_00001_00011_010_00100_0100011 | 0x0011A223          |
+| 9    | SRL r16, r11, 2      | 0000000_00010_01011_000_01101_0000001 | 0x0258681                      | 0000000_00010_01011_101_10000_0110011 | 0x0025D833          |
+| 10   | BNE r0, r1, 20      | 0_000000_00000_00000_000_1111_0_1100011 | 0x00f00002                     | 0000000_00001_00000_001_00010_1100011 | 0x00108263          |
+| 11   | BEQ r0, r0, r15    | 0000000_00010_01011_001_10000_0000011 | 0x00259803                     | 0000000_00000_00000_000_01111_1100011 | 0x00000F63          |
+| 12   | LW r13, r11, 2     |                                       |                                 |0000000_00010_01011_010_01101_0000011 |0x0025A683 |
+| 13   | SLL r15, r11, r2   |                                       |                                  |0000000_00010_01011_001_01111_0110011|0x002597B3|
+
+
+## Instructions provided in the verilog code
+![41](images/41.png)
+| S. No. | Operation          | Standard RISC-V ISA | Hardcoded ISA |
+|--------|--------------------|---------------------|---------------|
+| 1      | ADD R6, R1, R2      | 0x00110333          | 0x02208300    |
+| 2      | SUB R7, R1, R2      | 0x402083b3          | 0x02209380    |
+| 3      | AND R8, R1, R3      | 0x0030f433          | 0x0230a400    |
+| 4      | OR R9, R2, R5       | 0x005164b3          | 0x02513480    |
+| 5      | XOR R10, R1, R4     | 0x0040c533          | 0x0240c500    |
+| 6      | SLT R11, R2, R4     | 0x0045a0b3          | 0x02415580    |
+| 7      | ADDI R12, R4, 5     | 0x004120b3          | 0x00520600    |
+| 8      | BEQ R0, R0, 15      | 0x00000f63          | 0x00f00002    |
+| 9      | SW R3, R1, 2        | 0x0030a123          | 0x00209181    |
+| 10     | LW R13, R1, 2       | 0x0020a683          | 0x00208681    |
+| 11     | BEQ R0, R0, 15      | 0x00000f63          | 0x00f00002    |
+| 12     | ADD R14, R2, R2     | 0x00210733          | 0x00210700    |
+
+## Below are the output waveforms for each instruction from testbench.
+  ```1.  ADD r6, r1, r2 ```
+   
+   ![42](images/42.png)
+
+
+   ```2. SUB r7, r1, r2 ```
+
+   ![43](images/43.png)
+
+
+
+   ```3.  AND r8, r1, r3 ```
+
+   ![44](images/44.png)
+
+
+   ```4. OR r9, r2, r5 ```
+
+   ![45](images/45.png)
+
+
+   ```5. XOR r10, r1, r4 ```
+
+   ![46](images/46.png)
+
+  ```6. SLT r11, r2, r4 ```
+
+   ![47](images/47.png)
+
+
+   ```7. ADDI r12, r4, 5 ```
+
+   ![48](images/48.png)
+
+
+   ```8. SW r3, r1, 2 ```
+
+   ![49](images/49.png)
+
+
+   ```9. LW r0, r0, 15 ```
+
+   ![410](images/410.png)
+
+
+   ```10. BEQ r0, r0, 15 ```
+
+   ![411](images/411.png)
+
+
+   ```11. ADD r14, r2, r2```
+   
+   ![412](images/412.png)
+
+   The final output plot is :
+
+   ![413](images/413.png)
+
+
+
 </details>
  
   
