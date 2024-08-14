@@ -425,6 +425,113 @@
 1.  This C program simulates a basic vending machine. It allows a user to display available items, purchase an item by selecting it from the menu, and handle transactions, including calculating the total cost and change. It uses a menu-driven interface to interact with the user.
 2. Compile the program using GCC.
 3.  Execute the same C program using RISCV compiler and compare the results.
+### Procedure
+ ### Code
+ ```c
+#include <stdio.h>
+
+#define MAX_ITEMS 5
+
+typedef struct {
+    char name[30];
+    double price;
+    int quantity;
+} Item;
+
+void display_items(Item items[], int num_items);
+void purchase_item(Item items[], int num_items);
+
+int main() {
+    Item items[MAX_ITEMS] = {
+        {"Soda", 1.25, 10},
+        {"Chips", 1.00, 15},
+        {"Candy", 0.75, 20},
+        {"Water", 1.50, 10},
+        {"Juice", 1.75, 8}
+    };
+
+    int choice;
+
+    while (1) {
+        printf("\nVending Machine\n");
+        printf("-----------------\n");
+        printf("1. Display Items\n");
+        printf("2. Purchase Item\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                display_items(items, MAX_ITEMS);
+                break;
+            case 2:
+                purchase_item(items, MAX_ITEMS);
+                break;
+            case 3:
+                printf("Exiting...\n");
+                return 0;
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
+
+void display_items(Item items[], int num_items) {
+    printf("\nAvailable Items:\n");
+    printf("ID\tName\tPrice\tQuantity\n");
+    printf("----------------------------------\n");
+
+    for (int i = 0; i < num_items; i++) {
+        printf("%d\t%s\t$%.2f\t%d\n", i + 1, items[i].name, items[i].price, items[i].quantity);
+    }
+}
+
+void purchase_item(Item items[], int num_items) {
+    int item_id;
+    int quantity;
+    double payment;
+
+    printf("Enter the item ID you want to purchase: ");
+    scanf("%d", &item_id);
+
+    if (item_id < 1 || item_id > num_items) {
+        printf("Invalid item ID.\n");
+        return;
+    }
+
+    Item *selected_item = &items[item_id - 1];
+
+    if (selected_item->quantity == 0) {
+        printf("Sorry, %s is out of stock.\n", selected_item->name);
+        return;
+    }
+
+    printf("Enter the quantity you want to purchase: ");
+    scanf("%d", &quantity);
+
+    if (quantity > selected_item->quantity) {
+        printf("Sorry, we don't have enough %s in stock.\n", selected_item->name);
+        return;
+    }
+
+    double total_cost = quantity * selected_item->price;
+    printf("The total cost is $%.2f\n", total_cost);
+    printf("Enter your payment amount: ");
+    scanf("%lf", &payment);
+
+    if (payment < total_cost) {
+        printf("Insufficient payment. Transaction canceled.\n");
+        return;
+    }
+
+    double change = payment - total_cost;
+    selected_item->quantity -= quantity;
+    printf("Purchase successful. Your change is $%.2f\n", change);
+}
+```
 </details>
 
    
