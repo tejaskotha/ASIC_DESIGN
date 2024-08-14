@@ -532,6 +532,18 @@ void purchase_item(Item items[], int num_items) {
     printf("Purchase successful. Your change is $%.2f\n", change);
 }
 ```
+   ### To compile the code using GCC
+   ```
+   gcc vending.c
+   ```
+
+   ### To Run the code
+   ```
+   ./a.out
+   ```
+   ### Output
+   ![Output of the code](images/gcc_op.jpg)
+
 </details>
 
    
