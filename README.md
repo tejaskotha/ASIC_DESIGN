@@ -542,7 +542,22 @@ void purchase_item(Item items[], int num_items) {
    ./a.out
    ```
    ### Output
-   ![Output of the code](images/gcc_op.jpg)
+   ![Output of the code](images/v1.png)
+
+   ### To compile the code using RISCV
+   ```
+   riscv64-unknown-elf-gcc -O1 -mabi=lp64 -march=rv64i -o vending.o vending.c
+   ```
+   ### To run the code
+   ```
+    spike pk vending.o
+   ```
+   ### Output
+   
+   ![Ouput of RISCV](images/v2.png)
+
+   ### Conclusion
+   We can see that outputs are same when compiled using both GCC and RISCV.
 
 </details>
 
