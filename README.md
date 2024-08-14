@@ -418,6 +418,13 @@
  
 <details>
  <summary><strong>Lab-5</strong></summary>
+ 
+ ### Description
+   We compile a C program using GCC and RISCV compliers.
+ ### Tasks
+1.  This C program simulates a basic vending machine. It allows a user to display available items, purchase an item by selecting it from the menu, and handle transactions, including calculating the total cost and change. It uses a menu-driven interface to interact with the user.
+2. Compile the program using GCC.
+3.  Execute the same C program using RISCV compiler and compare the results.
 </details>
 
    
