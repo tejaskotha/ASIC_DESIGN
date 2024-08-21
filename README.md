@@ -661,59 +661,52 @@ Block diaagram and waveforms
 #### 7. Combinational Calculator Implementation in TL-Verilog
 
 **Calculator Overview:**
-In this section, we demonstrate a basic combinational calculator implemented using TL-Verilog on the Makerchip platform. The calculator does four fundamental arithmetic operations: addition, subtraction, multiplication, and division.
+In this section, we present a simple combinational calculator implemented using TL-Verilog on the Makerchip platform. The calculator performs four basic arithmetic operations: addition, subtraction, multiplication, and division.
 
 ```tl-verilog
 $val1[31:0] = $rand1[3:0];
 $val2[31:0] = $rand2[3:0];
 
 $sum[31:0]  = $val1[31:0] + $val2[31:0];
-$diff[31:0] = $val1[31:0] - $val2[31:0];
-$prod[31:0] = $val1[31:0] * $val2[31:0];
-$quot[31:0] = $val1[31:0] / $val2[31:0];
+$subt[31:0] = $val1[31:0] - $val2[31:0];
+$mul[31:0] = $val1[31:0] * $val2[31:0];
+$div[31:0] = $val1[31:0] / $val2[31:0];
 
 $out[31:0] = ($sel[1:0] == 2'b00) ? $sum[31:0]:
-             ($sel[1:0] == 2'b01) ? $diff[31:0]:
-             ($sel[1:0] == 2'b10) ? $prod[31:0]:
-                                    $quot[31:0];
+             ($sel[1:0] == 2'b01) ? $subt[31:0]:
+             ($sel[1:0] == 2'b10) ? $mul[31:0]:
+                                    $div[31:0];
 ```
 **Description:** 
 
-In this code snippet, two random 4-bit values, `$rand1[3:0]` and `$rand2[3:0]`, are assigned to the 32-bit variables `$val1[31:0]` and `$val2[31:0]`, respectively. The calculator then performs four arithmetic operations on these values:
+In this code snippet, two random 4-bit values, `$rand1[3:0]` and `$rand2[3:0]`, are assigned to 32-bit variables `$val1[31:0]` and `$val2[31:0]`, respectively. The calculator then performs four arithmetic operations on these values. A multiplexer (MUX), controlled by the selection bits `$sel[1:0]`, chooses the result of one of these operations to be assigned to `$out[31:0]`.
 
-The result of one of these operations is selected by a multiplexer (MUX), controlled by the selection bits `$sel[1:0]`. The MUX determines which operation's output is assigned to `$out[31:0]`.
+Block diaagram and waveforms
 
-The generated block diagram and waveforms are as shown
-
-
-![d3_10](https://github.com/user-attachments/assets/a6578318-0ba3-4807-9689-15cebb601037)
+![cal](images/610.png)
 
 
 ### Sequential Circuits in Makerchip:
 ---
-
-A sequential circuit is a digital circuit that uses memory components to retain data, allowing it to generate outputs based on both current inputs and the circuit's previous state. Unlike combinational circuits, which depend only on present inputs, sequential circuits use feedback loops and storage elements like flip-flops or registers to track their internal state. This internal state, along with current inputs, influences the circuit's behavior, enabling tasks that require input history, such as counting, data storage, or event sequencing.
-
+A sequential circuit is a digital circuit that incorporates memory components to store data, enabling it to produce outputs based on both current inputs and the circuit's previous state. Unlike combinational circuits, which rely solely on present inputs, sequential circuits use feedback loops and storage elements like flip-flops or registers to maintain an internal state. This internal state, combined with current inputs, determines the circuit's behavior, allowing it to perform tasks that require tracking input history, such as counting, data storage, or event sequencing.
 
 #### 1. Fibbonacci Series:
 
-Code is given below:
+Code:
 
 ```tl-verilog
 
 $num[31:0] = $reset ? 1 : (>>1$num + >>2$num);
 
 ```
-The generated block diagram and waveforms are shown below:
+Block diaagram and waveforms
 
-<img width="323" alt="d3_10" src="https://github.com/user-attachments/assets/fe64a7b9-e04a-4b35-a710-489245398cc2">
-
-<img width="1440" alt="Screenshot 2024-08-19 at 10 55 46 PM" src="https://github.com/user-attachments/assets/70f3befc-7fff-48fc-8458-a5cc00aefe46">
-
+![cal](images/611.png)
+![cal](images/612.png)
 
 #### 2. Counter Series:
 
-Code is given below:
+Code:
 
 ```tl-verilog
 
@@ -722,13 +715,13 @@ $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1);
 ```
 The generated block diagram and waveforms are shown below:
 
-![d3_11](https://github.com/user-attachments/assets/86e41f88-23a0-41a9-beda-88066ce08588)
+![counter](images/614.png)
 
-<img width="1439" alt="Screenshot 2024-08-19 at 10 57 11 PM" src="https://github.com/user-attachments/assets/0da1f14c-f56c-458a-ad53-044222bfe0bf">
+![counter](images/613.png)
 
 #### 3.Sequential Calculator:
 
-- Similar to previous combinational calculator but mimics real scenario in which the result of the previous operation is considered as one of the input for the next operation. Upon reset the result becomes zero.
+- Similar to the previous combinational calculator, this version simulates a real-world scenario where the result of the previous operation is used as one of the inputs for the next operation. Upon reset, the result is set to zero.
 
 Code is given below:
 ```tl-verilog
@@ -737,28 +730,28 @@ Code is given below:
    $val2[31:0] = $rand2[3:0];
 
    $sum[31:0]  = $val1[31:0] + $val2[31:0];
-   $diff[31:0] = $val1[31:0] - $val2[31:0];
-   $prod[31:0] = $val1[31:0] * $val2[31:0];
-   $quot[31:0] = $val1[31:0] / $val2[31:0];
+   $subt[31:0] = $val1[31:0] - $val2[31:0];
+   $mul[31:0] = $val1[31:0] * $val2[31:0];
+   $div[31:0] = $val1[31:0] / $val2[31:0];
 
    $nxt[31:0] = ($sel[1:0] == 2'b00) ? $sum[31:0]:
-                ($sel[1:0] == 2'b01) ? $diff[31:0]:
-                ($sel[1:0] == 2'b10) ? $prod[31:0]:
-                                       $quot[31:0];
+                ($sel[1:0] == 2'b01) ? $subt[31:0]:
+                ($sel[1:0] == 2'b10) ? $mul[31:0]:
+                                       $div[31:0];
    
    $out[31:0] = $reset ? 32'h0 : $nxt;
 
 ```
-The generated block diagram and waveforms are as shown:
+Blockd diagram and waveforms
 
-![d3_14](https://github.com/user-attachments/assets/16422daa-a746-49b0-aee5-dd83259cb1c0)
+![d3_14](images/615.png)
 
-![d3_13](https://github.com/user-attachments/assets/80e3e1fb-fd32-4e14-b228-000960b783b8)
+![d3_13](images/616.png)
 
 ### Pipelined Logic:
 ---
 
-In Transaction-Level Verilog (TL-Verilog), pipelined logic is efficiently expressed using pipeline constructs that represent data flow across design stages, each corresponding to a clock cycle. This approach simplifies the modeling of sequential logic by automatically handling state propagation and enabling clear, concise descriptions of complex, multi-stage operations, improving both design clarity and maintainability.
+In Transaction-Level Verilog (TL-Verilog), pipelined logic is effectively expressed using pipeline constructs that represent the flow of data through design stages, each aligned with a clock cycle. This method simplifies the modeling of sequential logic by automatically managing state propagation, allowing for clear and concise descriptions of complex, multi-stage operations, ultimately enhancing design clarity and maintainability.
 
 #### 1. Recereating the design:
 
