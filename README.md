@@ -851,6 +851,278 @@ Code is given below:
 
 block diagram and waveforms
 ![d3_13](images/621.png)
+</details>
+<details>
+<summary><strong>Day4</strong></summary>
+
+## Basic RISC-V CPU Micro-architecture
+
+-This section will discuss the implementation of a straightforward 3-stage RISC-V CPU core. The three main stages are: Fetch, Decode, and Execute. The following figure illustrates the basic block diagram of the CPU core:
+
+<img width="536" alt="Screenshot 2024-08-21 at 2 29 38 AM" src="https://github.com/user-attachments/assets/34e0b4d5-31ab-4164-b572-6271da8ee3d0">
+
+- **Implementation plan:**
+
+<img width="644" alt="Screenshot 2024-08-21 at 2 30 44 AM" src="https://github.com/user-attachments/assets/6fbfd24b-e30c-488c-b25a-a3839d2b169e">
+
+  
+### 1. Program Counter
+
+The Program Counter, also known as the Instruction Pointer, is a component that holds the address of the next instruction to be executed. Typically, the Program Counter increments by 4 to fetch the subsequent instruction from memory. If a reset is triggered, the Program Counter will be reinitialized to zero before continuing with the next instruction.
+
+Below diagram explains the working of PC:
+
+<img width="626" alt="Screenshot 2024-08-21 at 2 35 15 AM" src="https://github.com/user-attachments/assets/e2453cd8-497e-41bf-ba5c-072eac517218">
+
+
+Below is the code for working of program counter
+
+```tl-verilog
+$pc[31:0] = >>1$reset ? 0 : ( >>1$pc + 31'h4 );
+```
+Output of the code:-
+![pc](images/622.png)
+
+### 2. Adding the instruction memory
+
+<img width="613" alt="Screenshot 2024-08-21 at 2 37 29 AM" src="https://github.com/user-attachments/assets/0352140c-a4e9-4e80-a391-7d7388b96abc">
+
+- The Program Counter outputs an address used to fetch a 32-bit instruction from the instruction memory.
+- The Program Counter increments by 4 with each valid iteration to point to the next instruction.
+- During the Fetch stage, the processor retrieves the instruction from the memory based on the address provided by the Program Counter.
+
+<img width="250" alt="Screenshot 2024-08-21 at 2 38 00 AM" src="https://github.com/user-attachments/assets/4c29565a-993a-4bc8-9dad-ca400c096dff">
+
+Code for instruction memory
+
+```tl-verilog
+$imem_rd_en = >>1$reset ? 0 : 1;
+$imem_rd_addr[31:0] = $pc[M4_IMEM_INDEX_CNT+1:2];
+$instr[31:0] = $imem_rd_data[31:0];
+```
+
+Output:-
+
+![insmem](images/623.png)
+
+
+### 3. Decoding the instruction
+
+<img width="639" alt="Screenshot 2024-08-21 at 2 40 54 AM" src="https://github.com/user-attachments/assets/2bc79bfe-2774-4b34-9463-ee401dfb5e51">
+
+- The 32-bit fetched instruction must be decoded to determine the operation to be performed and identify the source and destination addresses.
+- There are six types of instructions:
+    - R-type (Register)
+    - I-type (Immediate)
+    - S-type (Store)
+    - B-type (Branch/Conditional Jump)
+    - U-type (Upper Immediate)
+    - J-type (Jump/Unconditional Jump)
+- The instruction format includes an opcode, immediate value, source address, and destination address.
+- During the Decode stage, the processor decodes the instruction according to its format and type.
+- The RISC-V ISA typically provides 32 registers, each with a width of XLEN (e.g., 32 bits for RV32). The register file allows two simultaneous reads and one write.
+
+<img width="672" alt="Screenshot 2024-08-21 at 2 42 01 AM" src="https://github.com/user-attachments/assets/16a7daf5-c03d-4b1d-8fd9-13fd76239b9e">
+
+We have decoded the instructions based on the six types of RISC-V instruction sets. The decoding code is as follows:
+
+```tl-verilog
+$is_i_instr = $instr[6:2] ==? 5'b0000x ||
+              $instr[6:2] ==? 5'b001x0 ||
+              $instr[6:2] ==? 5'b11001;
+$is_r_instr = $instr[6:2] ==? 5'b01011 ||
+              $instr[6:2] ==? 5'b011x0 ||
+              $instr[6:2] ==? 5'b10100;
+$is_s_instr = $instr[6:2] ==? 5'b0100x;
+$is_b_instr = $instr[6:2] ==? 5'b11000;
+$is_j_instr = $instr[6:2] ==? 5'b11011;
+$is_u_instr = $instr[6:2] ==? 5'b0x101;
+```
+
+Output:-
+
+![3a](images/624.png)
+
+
+### 3a. Immediate Decode Logic
+
+a.<img width="661" alt="Screenshot 2024-08-21 at 2 43 15 AM" src="https://github.com/user-attachments/assets/832acd74-85d0-45f8-b7d4-93bba21faba7">
+
+b.<img width="606" alt="Screenshot 2024-08-21 at 2 43 29 AM" src="https://github.com/user-attachments/assets/53e45a9e-c913-477f-8fcc-83a24e01e7ba">
+
+The above instruction sets have an immediate field. In order to decode this field we use the following code:-
+
+```tl-verilog
+$imm[31:0] = $is_i_instr ? {{21{$instr[31]}}, $instr[30:20]} :
+             $is_s_instr ? {{21{$instr[31]}}, $instr[30:25], $instr[11:7]} :
+             $is_b_instr ? {{20{$instr[31]}}, $instr[7], $instr[30:25], $instr[11:8], 1'b0} :
+             $is_u_instr ? {$instr[31:12], 12'b0} :
+             $is_j_instr ? {{12{$instr[31]}}, $instr[19:12], $instr[20], $instr[30:21], 1'b0} : 32'b0;
+```
+
+
+![3a](images/625.png)
+
+
+### 3b. Decode logic for other fields like rs1,rs2,func3,func7
+
+Apart from the immediate we have other fields which also need to be decoded. The code for the same is as follows:-
+
+```tl-verilog
+         $rs2_valid = $is_r_instr || $is_s_instr || $is_b_instr;
+         ?$rs2_valid
+            $rs2[4:0] = $instr[24:20];
+            
+         $rs1_valid = $is_r_instr || $is_i_instr || $is_s_instr || $is_b_instr;
+         ?$rs1_valid
+            $rs1[4:0] = $instr[19:15];
+         
+         $funct3_valid = $is_r_instr || $is_i_instr || $is_s_instr || $is_b_instr;
+         ?$funct3_valid
+            $funct3[2:0] = $instr[14:12];
+            
+         $funct7_valid = $is_r_instr ;
+         ?$funct7_valid
+            $funct7[6:0] = $instr[31:25];
+            
+         $rd_valid = $is_r_instr || $is_i_instr || $is_u_instr || $is_j_instr;
+         ?$rd_valid
+            $rd[4:0] = $instr[11:7];
+
+         $opcode[6:0] = $instr[6:0];
+```
+
+At any given time, only one instruction is decoded, which could belong to any of the six instruction types. Therefore, it's essential to validate the instruction to ensure it fits into its specific category, preventing conflicts between different instruction types.
+
+<img width="1440" alt="Screenshot 2024-08-21 at 3 25 15 AM" src="https://github.com/user-attachments/assets/971198b3-aa24-400e-92dc-fa9f60c7fbf2">
+
+
+### 3c. Decoding Individual Instructions
+
+<img width="451" alt="Screenshot 2024-08-21 at 2 48 25 AM" src="https://github.com/user-attachments/assets/64ec1d71-d805-4f2d-bb6c-75f7e945d262">
+
+In order to decode the above circled individual instructions use the following code
+
+```tl-verilog
+$dec_bits [10:0] = {$funct7[5], $funct3, $opcode};
+$is_beq = $dec_bits ==? 11'bx_000_1100011;
+$is_bne = $dec_bits ==? 11'bx_001_1100011;
+$is_blt = $dec_bits ==? 11'bx_100_1100011;
+$is_bge = $dec_bits ==? 11'bx_101_1100011;
+$is_bltu = $dec_bits ==? 11'bx_110_1100011;
+$is_bgeu = $dec_bits ==? 11'bx_111_1100011;
+$is_addi = $dec_bits ==? 11'bx_000_0010011;
+$is_add = $dec_bits ==? 11'b0_000_0110011;
+```
+
+We also need to update the program counter to account for branch instructions.
+
+```tl-verilog
+$pc[31:0] = >>1$reset ? 32'b0 :
+            >>1$taken_branch ? >>1$br_target_pc :
+            >>1$pc + 32'd4;
+```
+
+The output for the above code is as follows:-
+
+<img width="1430" alt="Screenshot 2024-08-21 at 3 23 45 AM" src="https://github.com/user-attachments/assets/3a2784fd-bc31-4f2d-939d-8c58345008a6">
+
+
+### 4. Register File Read and Enable
+
+<img width="604" alt="Screenshot 2024-08-21 at 2 50 51 AM" src="https://github.com/user-attachments/assets/6f36089a-3922-4385-b561-1fbbc7eaaec3">
+
+Here, instructions are read from the instruction memory and stored in registers. We have two register slots that read the instructions, and these stored instructions are then sent to the ALU for processing.
+
+The code is as follows:-
+
+```tl-verilog
+
+$rf_rd_en1 = $rs1_valid;
+$rf_rd_en2 = $rs2_valid;
+$rf_rd_index1[4:0] = $rs1;
+$rf_rd_index2[4:0] = $rs2;
+$src1_value[31:0] = $rf_rd_data1;
+$src2_value[31:0] = $rf_rd_data2;
+```
+
+The output for the code is as follows:-
+
+<img width="1440" alt="Screenshot 2024-08-21 at 3 18 40 AM" src="https://github.com/user-attachments/assets/1c7e86ee-ac9d-4fb3-936b-5e07c931ac97">
+
+### 5. Arithmetic and Logic Unit
+
+<img width="603" alt="Screenshot 2024-08-21 at 2 51 56 AM" src="https://github.com/user-attachments/assets/dbec9e58-e4e5-4edf-ad27-a5052bb105f7">
+
+Used to perform arithmetic operations on the values stored in the registers. The code for the same is as follows:-
+
+```tl-verilog
+
+$result[31:0] = $is_addi ? $src1_value + $imm :
+                $is_add ? $src1_value + $src2_value :
+                32'bx ;
+
+```
+
+In this section, we have implemented the code to account for ```addi``` and ```add``` operations.
+
+<img width="1440" alt="Screenshot 2024-08-21 at 11 53 07 AM" src="https://github.com/user-attachments/assets/c0604b13-3f92-4747-92d7-4a2d41f249bf">
+
+### 6. Register File Write
+
+<img width="621" alt="Screenshot 2024-08-21 at 2 53 26 AM" src="https://github.com/user-attachments/assets/32a6160e-9c83-40a2-b015-69faf34d18be">
+
+
+After the ALU performs operations on the values stored in the registers, we may need to write these values back into the registers. For this, we use the register file write. We must also ensure that no values are written to the destination register if it is x0, as it is always meant to remain 0. The code is as follows:
+
+```tl-verilog
+$rf_wr_en = $rd_valid && $rd != 5'b0;
+$rf_wr_index[4:0] = $rd;
+$rf_wr_data[31:0] = $result;
+```
+The output for the code is as follows:-
+
+<img width="1440" alt="Screenshot 2024-08-21 at 3 11 56 AM" src="https://github.com/user-attachments/assets/849779bd-493b-40ec-8ce2-8265ab0be8ac">
+
+
+### 7. Branch instructions
+
+<img width="559" alt="Screenshot 2024-08-21 at 2 55 26 AM" src="https://github.com/user-attachments/assets/f65a4952-c6fb-4ea9-9f53-d6bdccb26215">
+
+Based on the control input we may need to jump to some different address after a particular instruction based on some condition generated during run-time. This is when we use the branch instructions. The code is as follows:-
+
+```bash
+
+$taken_branch = $is_beq ? ($src1_value == $src2_value):
+                $is_bne ? ($src1_value != $src2_value):
+                $is_blt ? (($src1_value < $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                $is_bge ? (($src1_value >= $src2_value) ^ ($src1_value[31] != $src2_value[31])):
+                $is_bltu ? ($src1_value < $src2_value):
+                $is_bgeu ? ($src1_value >= $src2_value):1'b0;
+
+$br_target_pc[31:0] = $pc +$imm;
+
+```
+The output is as follows:-
+
+<img width="1440" alt="Screenshot 2024-08-21 at 3 07 58 AM" src="https://github.com/user-attachments/assets/45a95893-9f3e-41c4-a6db-96fe23b16615">
+
+
+
+
+### Testbench
+In order to check whether the code written is correct or not we verify it using the testbench for the 1st five cycles
+
+```bash
+*passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9) ;
+```
+Upon checking the log file we get the following result
+
+<img width="629" alt="Screenshot 2024-08-21 at 3 02 56 AM" src="https://github.com/user-attachments/assets/6a07e437-53bd-4f21-a7cd-b33d4f34fada">
+
+   
+</details>
+</details>
 
 
 
