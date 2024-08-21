@@ -1455,7 +1455,8 @@ $src2_value[31:0] = $rs2_bypass ? >>1$result[31:0] : $rf_rd_data2[31:0];
 ```
 ### Block diagram
 
-<img width="379" alt="image" src="https://github.com/user-attachments/assets/4e10d085-58db-48c5-9902-ca7ae695181a">
+<img width="587" alt="image" src="https://github.com/user-attachments/assets/3b895041-3c84-4a34-ac22-05f57304e280">
+
 
 ### WaveForms
 
