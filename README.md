@@ -754,10 +754,10 @@ Blockd diagram and waveforms
 In Transaction-Level Verilog (TL-Verilog), pipelined logic is effectively expressed using pipeline constructs that represent the flow of data through design stages, each aligned with a clock cycle. This method simplifies the modeling of sequential logic by automatically managing state propagation, allowing for clear and concise descriptions of complex, multi-stage operations, ultimately enhancing design clarity and maintainability.
 
 #### 1. Recereating the design:
+![d3_13](images/617.png)
 
-<img width="727" alt="Screenshot 2024-08-19 at 11 04 18 PM" src="https://github.com/user-attachments/assets/ffb5924f-b071-4e01-aaf6-d8ce569499ef">
 
-Code is given below:
+Code:
 ```tl-verilog
 |pipe
   @1
@@ -768,9 +768,7 @@ Code is given below:
     $err3 = $div_by_zero || $err2;
 ```
 The generated block diagram and waveforms are as shown:
-
-<img width="1440" alt="Screenshot 2024-08-19 at 11 08 42 PM" src="https://github.com/user-attachments/assets/9835e32b-a376-4364-b3c9-d31fad051557">
-
+![d3_13](images/618.png)
 So you can observe that the given design of pipeline and the recreated design are same.
 
 #### 2. Pipelined Calculator:
@@ -782,7 +780,7 @@ Code is given below:
    |cal
       @1
          $reset = *reset;
-         $clk_kar = *clk;
+         $clk_tej = *clk;
 
          $valid[31:0] = $reset ? 0 : (>>1$valid + 1);
          $nreset = $reset | ~$valid;
@@ -808,10 +806,8 @@ Code is given below:
 ```
 The generated block diagram and waveforms are as shown:
 
-<img width="399" alt="Screenshot 2024-08-19 at 11 12 36 PM" src="https://github.com/user-attachments/assets/00fac17d-6f81-47e1-97a3-946ffaac0ce8">
-
-<img width="1440" alt="Screenshot 2024-08-20 at 8 17 46 PM" src="https://github.com/user-attachments/assets/a793a04d-553a-4646-a02d-9349776cfdee">
-
+![d3_13](images/619.png)
+![d3_13](images/620.png)
 #### 3. Cycle Calculator with validity:
 
 - we add ```$valid_or_reset = $valid || $reset;``` as a when condition for calculation instead of zeroing ```$out```.
@@ -821,12 +817,12 @@ Code is given below:
 ```tl-verilog
 
    $reset = *reset;
-   $clk_kar = *clk;
+   $clk_tej = *clk;
    
    |cal
       @1
          $reset = *reset;
-         $clk_kar = *clk;
+         $clk_tej = *clk;
          
          $cnt[31:0] = $reset ? 0 : (>>1$cnt + 1);
          $valid = $cnt;
@@ -850,16 +846,13 @@ Code is given below:
                                                 $quot[31:0];
             
             $out[31:0] = $valid_or_reset ? 32'h0 : $nxt;
-            
-            
-            
-            
-            
+
 ```
 
-The generated block diagram and waveforms are as shown:
+block diagram and waveforms
+![d3_13](images/621.png)
 
-<img width="1439" alt="Screenshot 2024-08-20 at 8 11 41 PM" src="https://github.com/user-attachments/assets/673d049c-2bc6-41b1-aa17-f90b50a02737">
+
 
 
    
