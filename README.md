@@ -881,7 +881,8 @@ Below is the code for working of program counter
 $pc[31:0] = >>1$reset ? 0 : ( >>1$pc + 31'h4 );
 ```
 Output of the code:-
-![pc](images/622.png)
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/736be375-da94-41dd-bbee-29d0804c3906">
+
 
 ### 2. Adding the instruction memory
 
@@ -903,7 +904,8 @@ $instr[31:0] = $imem_rd_data[31:0];
 
 Output:-
 
-![insmem](images/623.png)
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/67e4cc5b-a161-409d-836b-90796e7c2f6b">
+
 
 
 ### 3. Decoding the instruction
@@ -941,7 +943,8 @@ $is_u_instr = $instr[6:2] ==? 5'b0x101;
 
 Output:-
 
-![3a](images/624.png)
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/475e2826-4173-4f65-909f-c76dced5b5b3">
+
 
 
 ### 3a. Immediate Decode Logic
@@ -961,8 +964,7 @@ $imm[31:0] = $is_i_instr ? {{21{$instr[31]}}, $instr[30:20]} :
 ```
 
 
-![3a](images/625.png)
-
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/bc7cf65d-91d1-4575-95ae-219820c95ae8">
 
 ### 3b. Decode logic for other fields like rs1,rs2,func3,func7
 
@@ -994,8 +996,7 @@ Apart from the immediate we have other fields which also need to be decoded. The
 
 At any given time, only one instruction is decoded, which could belong to any of the six instruction types. Therefore, it's essential to validate the instruction to ensure it fits into its specific category, preventing conflicts between different instruction types.
 
-<img width="1440" alt="Screenshot 2024-08-21 at 3 25 15 AM" src="https://github.com/user-attachments/assets/971198b3-aa24-400e-92dc-fa9f60c7fbf2">
-
+<img width="956" alt="image" src="https://github.com/user-attachments/assets/ea4a7f80-2551-4d8b-bca7-0a49d521ffad">
 
 ### 3c. Decoding Individual Instructions
 
@@ -1023,18 +1024,18 @@ $pc[31:0] = >>1$reset ? 32'b0 :
             >>1$pc + 32'd4;
 ```
 
-The output for the above code is as follows:-
+Ouput:-
 
-<img width="1430" alt="Screenshot 2024-08-21 at 3 23 45 AM" src="https://github.com/user-attachments/assets/3a2784fd-bc31-4f2d-939d-8c58345008a6">
+<img width="958" alt="image" src="https://github.com/user-attachments/assets/4d161fa8-8e19-4397-971c-45bad04f5180">
 
 
 ### 4. Register File Read and Enable
 
 <img width="604" alt="Screenshot 2024-08-21 at 2 50 51 AM" src="https://github.com/user-attachments/assets/6f36089a-3922-4385-b561-1fbbc7eaaec3">
 
-Here, instructions are read from the instruction memory and stored in registers. We have two register slots that read the instructions, and these stored instructions are then sent to the ALU for processing.
+In this process, instructions are fetched from the instruction memory and stored in registers. Two register slots are used to read the instructions, which are then sent to the ALU for processing.
 
-The code is as follows:-
+Code:-
 
 ```tl-verilog
 
@@ -1046,15 +1047,15 @@ $src1_value[31:0] = $rf_rd_data1;
 $src2_value[31:0] = $rf_rd_data2;
 ```
 
-The output for the code is as follows:-
+Output:-
 
-<img width="1440" alt="Screenshot 2024-08-21 at 3 18 40 AM" src="https://github.com/user-attachments/assets/1c7e86ee-ac9d-4fb3-936b-5e07c931ac97">
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/b3c0e473-c129-4f3d-8a96-179873cdbb35">
 
 ### 5. Arithmetic and Logic Unit
 
 <img width="603" alt="Screenshot 2024-08-21 at 2 51 56 AM" src="https://github.com/user-attachments/assets/dbec9e58-e4e5-4edf-ad27-a5052bb105f7">
 
-Used to perform arithmetic operations on the values stored in the registers. The code for the same is as follows:-
+This code is used to perform arithmetic operations on the values stored in the registers:
 
 ```tl-verilog
 
@@ -1066,30 +1067,30 @@ $result[31:0] = $is_addi ? $src1_value + $imm :
 
 In this section, we have implemented the code to account for ```addi``` and ```add``` operations.
 
-<img width="1440" alt="Screenshot 2024-08-21 at 11 53 07 AM" src="https://github.com/user-attachments/assets/c0604b13-3f92-4747-92d7-4a2d41f249bf">
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/6082a21c-1091-47cf-adc8-3ed5cb01d9a8">
+
 
 ### 6. Register File Write
 
 <img width="621" alt="Screenshot 2024-08-21 at 2 53 26 AM" src="https://github.com/user-attachments/assets/32a6160e-9c83-40a2-b015-69faf34d18be">
 
 
-After the ALU performs operations on the values stored in the registers, we may need to write these values back into the registers. For this, we use the register file write. We must also ensure that no values are written to the destination register if it is x0, as it is always meant to remain 0. The code is as follows:
+After the ALU processes the values stored in the registers, it may be necessary to write these results back into the registers. To do this, we use the register file write operation. It is important to ensure that no values are written to the destination register if it is x0, as this register is always intended to remain 0. The following code handles this:
 
 ```tl-verilog
 $rf_wr_en = $rd_valid && $rd != 5'b0;
 $rf_wr_index[4:0] = $rd;
 $rf_wr_data[31:0] = $result;
 ```
-The output for the code is as follows:-
+Output:-
 
-<img width="1440" alt="Screenshot 2024-08-21 at 3 11 56 AM" src="https://github.com/user-attachments/assets/849779bd-493b-40ec-8ce2-8265ab0be8ac">
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/5e5f1a9d-b152-48f5-bd9c-7c587fec6859">
+
 
 
 ### 7. Branch instructions
 
 <img width="559" alt="Screenshot 2024-08-21 at 2 55 26 AM" src="https://github.com/user-attachments/assets/f65a4952-c6fb-4ea9-9f53-d6bdccb26215">
-
-Based on the control input we may need to jump to some different address after a particular instruction based on some condition generated during run-time. This is when we use the branch instructions. The code is as follows:-
 
 ```bash
 
@@ -1103,22 +1104,20 @@ $taken_branch = $is_beq ? ($src1_value == $src2_value):
 $br_target_pc[31:0] = $pc +$imm;
 
 ```
-The output is as follows:-
+Output:-
 
-<img width="1440" alt="Screenshot 2024-08-21 at 3 07 58 AM" src="https://github.com/user-attachments/assets/45a95893-9f3e-41c4-a6db-96fe23b16615">
-
-
+<img width="959" alt="image" src="https://github.com/user-attachments/assets/4fc4076a-267c-4e14-84c3-ad30e5a0489a">
 
 
 ### Testbench
-In order to check whether the code written is correct or not we verify it using the testbench for the 1st five cycles
+To verify the correctness of the code, we use a testbench to check its operation over the first five cycles.
 
 ```bash
 *passed = |cpu/xreg[10]>>5$value == (1+2+3+4+5+6+7+8+9) ;
 ```
 Upon checking the log file we get the following result
 
-<img width="629" alt="Screenshot 2024-08-21 at 3 02 56 AM" src="https://github.com/user-attachments/assets/6a07e437-53bd-4f21-a7cd-b33d4f34fada">
+<img width="518" alt="image" src="https://github.com/user-attachments/assets/ce25f05a-085a-4913-8cd0-98fed8600f2b">
 
    
 </details>
