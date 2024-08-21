@@ -1119,6 +1119,11 @@ Upon checking the log file we get the following result
 
 <img width="518" alt="image" src="https://github.com/user-attachments/assets/ce25f05a-085a-4913-8cd0-98fed8600f2b">
 
+Waveforms showing output's gradual addition from 1 to 9 ;that is from 0(h00) to 45(h2d):
+
+![image](https://github.com/user-attachments/assets/3ee48b93-fa5e-4cf7-b71d-e9f5bfb3aed1)
+
+
 </details>
 <details>
 <summary><strong>Day5</strong></summary>
