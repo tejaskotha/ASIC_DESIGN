@@ -1468,7 +1468,7 @@ $src2_value[31:0] = $rs2_bypass ? >>1$result[31:0] : $rf_rd_data2[31:0];
 
 <img width="599" alt="image" src="https://github.com/user-attachments/assets/ec044d5a-3ab1-4f6b-852a-5669f5db1c03">
 
-**Gradual increment of output from 0(h00) to 55(h37):**
+**Gradual increment of output from 0(h00) to 25(h2d):**
 
 <img width="489" alt="image" src="https://github.com/user-attachments/assets/9d617116-d6d5-4c4a-b14a-ab4838b828c1">
 
