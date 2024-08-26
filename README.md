@@ -1488,6 +1488,137 @@ You'll notice that the value of register 10 will reach 45 after 59 cycles.
 </details>
 </details>
 
+<details>
+ 
+<summary><strong>Lab-7</strong> </summary>
+ 
+## Comparision of GTK wave output and Makerchip output
+
+## Comparision of RISC-V Pre-Synthesis Simulation outputs using Iverilog GTKwave and Makerchip
+
+The RISC-V processor was initially designed using TL-Verilog in the Makerchip IDE. For FPGA implementation, it was converted to Verilog using the Sandpiper-SaaS compiler. Pre-synthesis simulations were subsequently carried out using the GTKWave simulator.
+
+**Step-by-Step process of simulation:**
+
+1.Execute the following set of commands to set up a development environment for working with simulation and synthesis tools, specifically for tasks involving Verilog and RISC-V.
+
+``` bash
+$ sudo apt install make python python3 python3-pip git iverilog gtkwave
+
+$ cd ~
+
+$ sudo apt-get install python3-venv
+
+$ python3 -m venv .venv
+
+$ source ~/.venv/bin/activate
+
+$ pip3 install pyyaml click sandpiper-saas
+```
+
+<img width="501" alt="image" src="https://github.com/user-attachments/assets/26e66f8d-094e-49b9-8083-c48fca3810ee">
+<img width="812" alt="image" src="https://github.com/user-attachments/assets/4658cf7b-7f57-4c4b-84b5-aa21a74acaff">
+
+2. To install the required packages, run the following commands within a virtual environment:
+   
+```bash
+$ sudo apt install make python python3 python3-pip git iverilog gtkwave docker.io
+
+$ sudo chmod 666 /var/run/docker.sock
+
+$ cd ~
+
+$ pip3 install pyyaml click sandpiper-saas
+
+```
+<img width="362" alt="image" src="https://github.com/user-attachments/assets/73d41cad-240d-48f8-bc8e-1afbff684bb5">
+<img width="824" alt="image" src="https://github.com/user-attachments/assets/9b06bf83-88e7-43d5-b5b8-c55570778a7f">
+
+3. Next, clone the following repository into the home directory and create a ```pre_synth_sim``` directory to store the output.
+
+```bash
+$ cd ~
+
+$ git clone https://github.com/manili/VSDBabySoC.git
+
+$ cd /home/vsduser/VSDBabySoC
+
+$ make pre_synth_sim
+
+```
+
+![image](https://github.com/user-attachments/assets/36e4b6d9-fdad-43cb-a7c0-696abeeecad7)
+
+
+
+4.Replace the ```rvmyth.tlv``` file in the VSDBabySoC/src/module folder with your RISC-V design ```.tlv``` file from Makerchip that you want to convert to Verilog. Additionally, update the testbench to match your Makerchip code.
+
+5.To obtain the Verilog code from your TLV code and translate the .tlv definition of the RISC-V into a .v definition, use the following code.
+
+```bash
+$ sandpiper-saas -i ./src/module/rvmyth.tlv -o rvmyth.v --bestsv --noline -p verilog --outdir ./src/module/
+```
+![image](https://github.com/user-attachments/assets/abfa2d5b-9db8-4ddb-954c-6e248e450576)
+
+6. Now to compile and simulate RISC-V design run the following code.
+   
+```bash
+$ iverilog -o output/pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module
+```
+
+6. The result of the simulation (i.e. pre_synth_sim.vcd) will be stored in the output/pre_synth_sim directory.
+```bash
+$ cd output
+
+$ ./pre_synth_sim.out
+```
+<img width="763" alt="image" src="https://github.com/user-attachments/assets/7f395831-6d5c-4f10-ba0d-89ae0e601a01">
+
+ 7. To open the .vcd simulation file through GTKWave simulation tool
+    
+```bash
+$ gtkwave pre_synth_sim.vcd
+```
+
+**Pre-synthesis Simulation results:**
+Signals to plot are the following:
+- clk_tej: This is the clock input to the RISC-V core. 
+- reset: This is the input reset signal to the RISC-V core. 
+- OUT[9:0]: This is the 10-bit output [9:0] OUT port of the RISC-V core. This port comes from the RISC-V register #14, originally.
+
+**GTKWave Simulation waveforms:**
+
+- clk_tej plot:
+  
+<img width="918" alt="image" src="https://github.com/user-attachments/assets/c17eaf87-c396-429d-9080-2774f1641919">
+
+- reset plot:
+  
+<img width="926" alt="image" src="https://github.com/user-attachments/assets/59bf656f-00ea-445f-8914-638670cacd88">
+
+  
+- OUT[9:0] plot:
+
+ <img width="927" alt="image" src="https://github.com/user-attachments/assets/06b44a38-4598-431e-bd24-4c488bd5de57">
+
+**Makerchip IDE simulation results for comparison**
+
+- clk_tej plot:
+  
+ <img width="599" alt="image" src="https://github.com/user-attachments/assets/5a5853de-1c6f-4b76-abf7-9edcc15d3dba">
+
+- reset plot:
+
+  <img width="599" alt="image" src="https://github.com/user-attachments/assets/ec044d5a-3ab1-4f6b-852a-5669f5db1c03">
+ 
+
+- OUT[9:0] plot:
+
+   <img width="489" alt="image" src="https://github.com/user-attachments/assets/9d617116-d6d5-4c4a-b14a-ab4838b828c1">
+
+   
+</details>
+
 
 
 
