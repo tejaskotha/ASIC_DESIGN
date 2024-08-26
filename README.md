@@ -1599,7 +1599,8 @@ Signals to plot are the following:
   
 - OUT[9:0] plot:
 
- <img width="927" alt="image" src="https://github.com/user-attachments/assets/06b44a38-4598-431e-bd24-4c488bd5de57">
+<img width="926" alt="image" src="https://github.com/user-attachments/assets/9cd97d29-3929-44ed-b28a-56094bb1d7e0">
+
 
 **Makerchip IDE simulation results for comparison**
 
