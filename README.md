@@ -1634,6 +1634,10 @@ Signals to plot are the following:
 ```
 git clone https://github.com/manili/VSDBabySoC.git
 ```
+![Screenshot from 2024-09-02 23-06-41](https://github.com/user-attachments/assets/c7812c84-d88a-4f36-b0f8-a7090a39897f)
+
+![Screenshot from 2024-09-02 23-09-12](https://github.com/user-attachments/assets/9d230bb7-f7bd-4442-8de6-b5676542d800)
+
 
 ### Editing the Top-level verilog code
 
@@ -1645,6 +1649,14 @@ iverilog -o ./pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/in
 ./pre_synth_sim.out
 gtkwave pre_synth_sim.vcd
 ```
+
+![Screenshot from 2024-09-02 23-13-44](https://github.com/user-attachments/assets/88f17028-b88f-4efa-8d85-993f2b8aa79e)
+![Screenshot from 2024-09-02 23-14-44](https://github.com/user-attachments/assets/90bf0248-5c0c-46e1-8e8d-f7513ce818ae)
+![Screenshot from 2024-09-02 23-19-44](https://github.com/user-attachments/assets/670c7ee9-bc89-467d-9854-b8e6ec21f4f1)
+
+
+
+
 </details>
 
 
