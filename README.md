@@ -1615,10 +1615,39 @@ Signals to plot are the following:
 
 - OUT[9:0] plot:
 
-   <img width="489" alt="image" src="https://github.com/user-attachments/assets/9d617116-d6d5-4c4a-b14a-ab4838b828c1">
-
-   
+   <img width="489" alt="image" src="https://github.com/user-attachments/assets/9d617116-d6d5-4c4a-b14a-ab4838b828c1">  
 </details>
+
+<details>
+ <summary><strong>Lab-8</strong> </summary>
+ 
+ ### AIM
+* The task involves integrating and validating the functionality of a custom RISC-V processor (rvmyth) within the BabySoC platform, using specialized tools for digital design and simulation.
+* The objective is to generate DAC and PPL waveforms for the RISC-V processor.
+
+### PHASE-LOCKED LOOP (PLL)
+* A Phase-Locked Loop (PLL) is an electronic control system that produces an output signal with a phase that is synchronized to the phase of an input signal.
+* It is widely utilized in telecommunications, radio, and computing for signal synchronization, frequency stabilization, and clock generation for digital circuits.
+
+### Download and Prepare Project Files
+* You can download all the files for BabySoC using the following command.
+```
+git clone https://github.com/manili/VSDBabySoC.git
+```
+
+### Editing the Top-level verilog code
+
+### Simulation Procedure
+* You can perform a functional simulation using the following command.
+```
+cd BabySoC_Simulation
+iverilog -o ./pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module/
+./pre_synth_sim.out
+gtkwave pre_synth_sim.vcd
+```
+</details>
+
+
 
 
 
