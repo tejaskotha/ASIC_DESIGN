@@ -1653,7 +1653,7 @@ gtkwave pre_synth_sim.vcd
 ```
 ### Results
 
-* Waveform
+* Waveforms
   
    - Clock waveform as clk_tej along with PLL clk.
      
