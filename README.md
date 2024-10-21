@@ -1850,6 +1850,417 @@ write_verilog -noattr good_mux_netlist.v
 
 
 
+<details>  
+<summary><strong>Day 2:</strong></summary>
+
+## Introduction to timing labs
+
+Run the following commands to view the contents inside the .lib file:
+
+```
+cd VLSI/sky130RTLDesignAndSynthesisWorkshop/lib/
+
+vim sky130_fd_sc_hd__tt_025C_1v80.lib
+
+```
+![Screenshot from 2024-10-21 23-51-26](https://github.com/user-attachments/assets/398166c2-fa1f-49ee-94b0-edbd2b5bc252)
+
+![Screenshot from 2024-10-21 23-50-58](https://github.com/user-attachments/assets/bec8779e-020e-4d86-89cb-63861730a771)
+
+
+##  Cell library
+ A standard cell library is a collection of characterized logic gates that can be used to implement digital circuits. The Liberty (.lib) files contain PVT parameters (Process, Voltage, Temperature) that can significantly impact circuit performance. Variations in manufacturing, changes in voltage, and fluctuations in temperature all play a role in affecting how the circuit functions.
+
+![Screenshot from 2024-10-21 12-18-00](https://github.com/user-attachments/assets/e084adcb-14b2-4f9c-95e7-3a6c8a7ab6d8)
+
+We can also find various flavours of AND gate
+
+![22](https://github.com/user-attachments/assets/1c5784b6-d129-4b74-97cd-30a70c84b9fb)
+![23](https://github.com/user-attachments/assets/619718fb-8e3b-4aeb-af6b-47d00f6f0f40)
+![24](https://github.com/user-attachments/assets/1d6bc766-a9aa-47b4-9ce6-d2c201e5ce80)
+
+We can observe that:
+* and2_0 -- takes the least area, more delay and low power.
+* and2_1 -- takes more area, less delay and high power.
+* and2_2 -- takes the largest area, larger delay and highest power.
+
+## Hierarchial synthesis vs Flat synthesis 
+
+Hierarchical synthesis involves breaking down a complex design into various sub-modules, each of which is synthesized separately to produce gate-level netlists before being integrated. This approach enhances organization, allows for module reuse, and enables incremental design changes without impacting the entire system. In contrast, flat synthesis treats the entire design as a single unit during the synthesis process, resulting in a single netlist regardless of any hierarchical relationships. While flat synthesis can optimize certain designs, it becomes difficult to maintain, analyze, and modify the design due to its absence of structural modularity.
+
+### Hierarchial synthesis  
+
+Consider the verilog file ```multiple_modules.v``` which is given in the verilog_files directory
+```
+module sub_module2 (input a, input b, output y);
+    assign y = a | b;
+endmodule
+
+module sub_module1 (input a, input b, output y);
+    assign y = a&b;
+endmodule
+
+
+module multiple_modules (input a, input b, input c , output y);
+    wire net1;
+    sub_module1 u1(.a(a),.b(b),.y(net1));  //net1 = a&b
+    sub_module2 u2(.a(net1),.b(c),.y(y));  //y = net1|c ,ie y = a&b + c;
+endmodule
+```
+To perform hierarchical synthesis on the ```multiple_modules.v ``` file use the following commands:
+```
+yosys
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog multiple_modules.v
+
+synth -top multiple_modules
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show multiple_modules
+
+write_verilog -noattr multiple_modules_hier.v
+
+!vim multiple_modules_hier.v
+
+```
+When you do synth -top 'topmodulename' in yosys, it does an hierarchical synthesis. ie the different hierarchies between modules are preserved.
+
+![Screenshot from 2024-10-21 23-55-32](https://github.com/user-attachments/assets/9352963f-9146-4f64-9267-2da488c43cfa)
+
+
+**Staistics of Multiple Modules**
+![Screenshot from 2024-10-21 23-56-19](https://github.com/user-attachments/assets/45c2ef54-b771-4184-99b9-132c8cea25e8)
+
+
+**Realization of the Logic**
+
+![Screenshot from 2024-10-21 23-58-08](https://github.com/user-attachments/assets/e6ba4db2-ea45-48cf-9dd5-2460e65d9f87)
+
+
+**Map to the standard library**
+
+![Screenshot from 2024-10-21 23-59-46](https://github.com/user-attachments/assets/9dc01201-afc0-49a2-81cd-c00732251500)
+
+
+
+**Netlist file**
+
+![Screenshot from 2024-10-22 00-00-20](https://github.com/user-attachments/assets/8d444e83-5bed-492d-82e6-387898ce6bf0)
+
+
+
+
+#### Flat synthesis  
+Merges all hierarchical modules in the design into a single module to create a flat netlist. To perform flat synthesis on the ```multiple_modules.v``` file type the following commands:
+```
+yosys
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog multiple_modules.v
+
+synth -top multiple_modules
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+flatten
+
+show
+
+write_verilog -noattr multiple_modules_flat.v
+
+!vim multiple_modules_flat.v
+```
+![210](https://github.com/user-attachments/assets/42b2b8cc-8616-41fc-b79d-9674d6182b61)
+
+**Realization of the Logic**
+
+![Screenshot from 2024-10-22 00-08-52](https://github.com/user-attachments/assets/b8d9c896-9581-4b9a-9127-8b50b657ca1b)
+
+**Netlist file**
+
+![Screenshot from 2024-10-22 00-09-54](https://github.com/user-attachments/assets/7d6851d0-623f-4227-affb-0f7004ab622b)
+
+
+
+### Sub Module Level Synthesis
+This method is preferred when multiple instances of same module are used. The synthesis is carried out once and is replicate multiple times, and the multiple instances of the same module are stitched together in the top module. This method is helpful when making use of divide and conquer algorithm
+
+
+ ```
+yosys
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog multiple_modules.v
+
+synth -top sub_module1
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show
+```
+
+![213](https://github.com/user-attachments/assets/0a46f5fe-d9f0-4bef-a7d0-72f5192a9739)
+
+**Realization of the Logic**
+
+![Screenshot from 2024-10-22 00-10-49](https://github.com/user-attachments/assets/cfe44c0d-e941-47aa-b116-4031d5f60994)
+
+
+
+## Flop coding styles and optimization
+
+Flip-Flops are an essential part of sequential logic in a circuit and here we explore the design and synthesis of various types of flip-flops. To prevent glitches in digital circuits, we use flip-flops to store intermediate values. This ensures that combinational circuit inputs remain stable until the clock edge, avoiding glitches and maintaining correct operation:
+
+### Asynchronous Reset/set:
+
+**Verilog Code for Asynchronous Reset:**
+
+```
+module dff_asyncres ( input clk ,  input async_reset , input d , output reg q );
+always @ (posedge clk , posedge async_reset)
+begin
+	if(async_reset)
+		q <= 1'b0;
+	else	
+		q <= d;
+end
+endmodule
+```
+**Verilog Code Asynchronous Set:**
+
+```
+module dff_async_set ( input clk ,  input async_set , input d , output reg q );
+always @ (posedge clk , posedge async_set)
+begin
+	if(async_set)
+		q <= 1'b1;
+	else	
+		q <= d;
+end
+endmodule
+```
+
+In this design, the `always` block is triggered by changes in the clock or the reset signal. The circuit is sensitive to the positive edge of the clock. When the reset/set signal goes low or high, the signal on the `q` line changes accordingly. Therefore, the behavior associated with the reset/set occurs immediately and does not wait for the positive edge of the clock.
+
+### Synchronous Reset:
+
+```
+module dff_syncres ( input clk , input async_reset , input sync_reset , input d , output reg q );
+always @ (posedge clk )
+begin
+	if (sync_reset)
+		q <= 1'b0;
+	else	
+		q <= d;
+end
+endmodule
+```
+
+#### FLIP FLOP SIMULATION
+
+```
+iverilog dff_asyncres.v tb_dff_asyncres.v 
+
+ls
+
+./a.out
+
+gtkwave tb_dff_asyncres.vcd
+```
+
+**GTK WAVE OF ASYNCHRONOUS RESET**
+![Screenshot from 2024-10-22 00-15-08](https://github.com/user-attachments/assets/96cf2438-0776-4781-9343-4aad52064eef)
+
+
+**GTK WAVE OF ASYNCHRONOUS SET**
+
+![Screenshot from 2024-10-22 00-17-54](https://github.com/user-attachments/assets/4a6edef1-10e6-4840-ba17-d4e94d61fb0c)
+
+
+**GTK WAVE OF SYNCHRONOUS RESET**
+
+![Screenshot from 2024-10-22 00-19-24](https://github.com/user-attachments/assets/afa39f4c-f578-4a1d-a6e7-e4de18e5cf29)
+
+
+#### FLIP FLOP SYNTHESIS
+
+```
+
+yosys
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog dff_asyncres.v
+
+synth -top dff_asyncres
+
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show 
+```
+**Statistics of D FLipflop with Asynchronous Reset**
+
+![Screenshot from 2024-10-22 00-22-41](https://github.com/user-attachments/assets/8544690a-0f77-4454-9144-5e2713b3d738)
+
+![Screenshot from 2024-10-22 00-23-19](https://github.com/user-attachments/assets/c01017fd-e415-4200-af06-ea5b4bb0a504)
+
+
+**Realization of Logic**
+
+![Screenshot from 2024-10-22 00-20-35](https://github.com/user-attachments/assets/d7223158-3d06-415d-976d-6a3a6579b79b)
+
+
+**Note:**  We wrote a flop with active high reset but the flop is having acting low reset so the tool inserted the inverter so (!(!(reset))) is just reset so at the end we got a flop with active high reset
+
+**Statistics of D FLipflop with Asynchronous set**\
+Follow the same steps as given above just the file name changes to dff_async_set.v
+
+![222](https://github.com/user-attachments/assets/4e40503f-28f9-4c14-ab11-08a2de0946f1)
+
+![223](https://github.com/user-attachments/assets/d4910286-fb0e-4e89-991b-d96d0e8b8653)
+
+**Realization of Logic**
+
+![224](https://github.com/user-attachments/assets/90253526-d4c0-472d-a5af-fd6c52c258dc)
+
+**Note:**  We wrote a flop with active high set but the flop is having acting low set so the tool inserted the inverter so (!(!(set))) is just set so at the end we got a flop with active high set
+
+**Statistics of D FLipflop with Synchronous Reset**
+
+![Screenshot from 2024-10-22 00-29-04](https://github.com/user-attachments/assets/7a6b936e-2cff-499b-b3f9-70d9e3856d92)
+
+
+![Screenshot from 2024-10-22 00-28-27](https://github.com/user-attachments/assets/223d8c96-4603-4c43-93dc-64dc7e64d4b1)
+
+
+
+**Realization of Logic**
+
+
+![Screenshot from 2024-10-22 00-27-55](https://github.com/user-attachments/assets/6c118f0c-8a8f-4a10-b59f-bf7ee304ba26)
+
+
+
+
+## Optimizations
+
+### Example 1: mult_2.v 
+
+**verilog code**
+
+```
+module mul2 (input [2:0] a, output [3:0] y);
+assign y = a * 2;
+endmodule
+```
+
+**truth table**
+
+![Screenshot from 2024-10-21 15-35-31](https://github.com/user-attachments/assets/b53852d4-4db4-417e-8532-8f5e453fc84a)
+
+We can see the multiplication of a number by 2 doesnt really need any extra hardware we just need to append the LSB's with zeroes and the remaining bits are the input bits of same, It can be realised by grouding the LSB's and wiring the input properly to the output.
+
+Run the below code to view the netlist:
+
+```
+yosys
+
+read_liberty -lib ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog mult_2.v
+
+synth -top mult2
+
+abc -liberty ../my_lib/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show 
+
+write_verilog -noattr mult_2_net.v
+
+!vim mult_2_net.v
+```
+**Statestics**
+
+![Screenshot from 2024-10-22 00-42-26](https://github.com/user-attachments/assets/1fa0a801-da95-41de-bb6f-e7d5daa71e20)
+
+
+
+**Realization of Logic**
+
+![Screenshot from 2024-10-22 00-41-44](https://github.com/user-attachments/assets/15d6f78b-2f72-4779-be25-e0e208e5b34c)
+
+
+
+**Netlist**
+
+![Screenshot from 2024-10-22 00-42-50](https://github.com/user-attachments/assets/5f919272-0b06-4084-ac9b-9746c25d7d93)
+
+
+
+### Example 2: mult_8.v
+
+**verilog code**
+
+```
+module mult8 (input [2:0] a , output [5:0] y);
+	assign y = a * 9;
+endmodule
+```
+
+**logic behaviour**
+
+![Screenshot from 2024-10-21 15-43-38](https://github.com/user-attachments/assets/a66a1c34-977d-446c-a462-fae3073a1425)
+
+
+In this design the 3-bit input number "a" is multiplied by 9 i.e (a9) which can be re-written as (a8) + a . The term (a8) is nothing but a left shifting the number a by three bits. Consider that a = a2 a1 a0. (a8) results in a2 a1 a0 0 0 0. (a9)=(a8)+a = a2 a1 a0 a2 a1 a0 = aa(in 6 bit format). Hence in this case no hardware realization is required. The synthesized netlist of this design is shown below:
+
+```
+yosys
+
+read_liberty -lib ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog mult_8.v
+
+synth -top mul8
+
+dfflibmap -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+abc -liberty ../lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+show
+
+write_verilog -noattr mult_8_net.v
+
+```
+
+**Statestics**
+
+![Screenshot from 2024-10-22 00-43-49](https://github.com/user-attachments/assets/c438ac55-31e0-407e-bb77-c877fa3bd5b9)
+
+
+
+**Realization of Logic**
+
+![Screenshot from 2024-10-22 00-43-29](https://github.com/user-attachments/assets/3e91d7d2-161c-417f-9b7d-20df0af69c75)
+
+
+
+**Netlist**
+ 
+![Screenshot from 2024-10-22 00-45-58](https://github.com/user-attachments/assets/21771605-8806-4430-a721-a96313e89ed4)
+
+
+
+
+</details>
+
 
 
 
