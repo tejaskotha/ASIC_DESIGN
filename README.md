@@ -3303,8 +3303,6 @@ gtkwave dump.vcd
 
 ![PHOTO-2024-10-24-01-56-14](https://github.com/user-attachments/assets/9cb37544-d272-42b8-9006-3f3e86f2fc13)
 
-![PHOTO-2024-10-24-02-46-15](https://github.com/user-attachments/assets/2319d29c-ec92-4d2b-8c91-677e2ced564f)
-
 ## RTL Simulations
 
  ### Command Steps :
