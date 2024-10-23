@@ -3241,6 +3241,84 @@ In this case there is a synthesis and simulation mismatch. While performing synt
 
 
 
+<details>
+<summary><strong>Lab 10</strong></summary>
+	
+## Synthesizing RISC-V and comparing output with functional (RTL) simulation.
 
+
+### Steps 
+
+Copy the ```src``` folder from your ```BabySoC``` folder to your ```sky130RTLDesignAndSynthesisWorkshop``` folder in your ```VLSI``` folder from previous lab.
+
+Go to the Directory: 
+
+```
+cd /home/tejas/VLSI/sky130RTLDesignAndSynthesisWorkshop/src/module
+```
+
+### Synthesis: 
+
+```
+yosys       
+
+read_liberty -lib /home/tejas/VLSI/sky130RTLDesignAndSynthesisWorkshop/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_verilog clk_gate.v
+
+read_verilog rvmyth.v
+
+synth -top rvmyth
+
+abc -liberty /home/tejas/VLSI/sky130RTLDesignAndSynthesisWorkshop/lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+write_verilog -noattr rvmyth_net.v
+
+!gvim rvmyth_net.v
+
+exit
+```
+![Screenshot from 2024-10-24 01-06-20](https://github.com/user-attachments/assets/df4b5373-bcba-4cc6-bf30-b93e7e3051c9)
+![Screenshot from 2024-10-24 01-11-00](https://github.com/user-attachments/assets/a4770927-109d-485f-837a-96851f80cef3)
+
+
+
+Now to observe the output waveform of synthesised RISC-V
+```
+iverilog ../../my_lib/verilog_model/primitives.v ../../my_lib/verilog_model/sky130_fd_sc_hd.v rvmyth.v testbench.v vsdbabysoc.v avsddac.v avsdpll.v clk_gate.v
+
+./a.out
+
+gtkwave dump.vcd
+```
+![Screenshot from 2024-10-24 01-23-10](https://github.com/user-attachments/assets/0d5776e0-2b9a-4ac0-bcf6-b0920494ea79)
+
+![Screenshot from 2024-10-24 01-16-53](https://github.com/user-attachments/assets/a2ce18d7-e658-4d72-9671-716df2328254)
+
+![Screenshot from 2024-10-24 01-21-20](https://github.com/user-attachments/assets/2563c28b-12f1-4cba-9e34-71b499891318)
+
+## RTL Simulations
+
+ ### Command Steps :
+ ```
+cd BabySoC
+
+iverilog -o ./pre_synth_sim.out -DPRE_SYNTH_SIM src/module/testbench.v -I src/include -I src/module/
+
+./pre_synth_sim.out
+
+gtkwave pre_synth_sim.vcd
+
+```
+
+![Screenshot from 2024-10-24 01-28-10](https://github.com/user-attachments/assets/47f868c6-6a4e-479b-8b66-e0de71ba43b4)
+
+![Screenshot from 2024-10-24 01-26-50](https://github.com/user-attachments/assets/f4a3cd3b-820b-454b-b076-50b49b00833f)
+
+![Screenshot from 2024-10-24 01-27-33](https://github.com/user-attachments/assets/7a9c6e4a-77ee-4b66-8bae-606c4bc63e51)
+
+
+ 
+</details>
    
    
