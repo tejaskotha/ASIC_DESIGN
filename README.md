@@ -3334,7 +3334,7 @@ gtkwave pre_synth_sim.vcd
 ### STA for synthesized Risc-V core using time period of 10.9 ns.
 To verify that our synthesized RISC-V Core module meets its timing constraints, we will generate setup and hold timing reports. These reports will confirm that data signals propagate correctly throughout the core. Run the following commands:
 ```
-set PERIOD 10.65
+set PERIOD 10.9
 
 set_units -time ns
 
