@@ -3328,7 +3328,7 @@ gtkwave pre_synth_sim.vcd
 </details>
 
 <details>
-<summary><strong>Lab Session 11:</strong>Post Synthesis Static Timing Analysis using OpenSTA.</summary>
+<summary><strong>Lab11</strong></summary>
 	
 
 ### STA for synthesized Risc-V core using time period of 10.9 ns.
