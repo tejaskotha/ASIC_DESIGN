@@ -3326,5 +3326,66 @@ gtkwave pre_synth_sim.vcd
 
  
 </details>
-   
-   
+
+<details>
+<summary><strong>Lab Session 11:</strong>Post Synthesis Static Timing Analysis using OpenSTA.</summary>
+	
+
+### STA for synthesized Risc-V core using time period of 10.9 ns.
+To verify that our synthesized RISC-V Core module meets its timing constraints, we will generate setup and hold timing reports. These reports will confirm that data signals propagate correctly throughout the core. Run the following commands:
+```
+set PERIOD 10.65
+
+set_units -time ns
+
+create_clock [get_pins {pll/CLK}] -name clk -period $PERIOD
+set_clock_uncertainty -setup  [expr $PERIOD * 0.05] [get_clocks clk]
+set_clock_transition [expr $PERIOD * 0.05] [get_clocks clk]
+set_clock_uncertainty -hold [expr $PERIOD * 0.08] [get_clocks clk]
+set_input_transition [expr $PERIOD * 0.08] [get_ports ENb_CP]
+set_input_transition [expr $PERIOD * 0.08] [get_ports ENb_VCO]
+set_input_transition [expr $PERIOD * 0.08] [get_ports REF]
+set_input_transition [expr $PERIOD * 0.08] [get_ports VCO_IN]
+set_input_transition [expr $PERIOD * 0.08] [get_ports VREFH]
+```
+Now, run the below commands:
+```
+cd VSDBabySoc/src
+
+sta
+
+read_liberty -min ./lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_liberty -min ./lib/avsdpll.lib
+
+read_liberty -min ./lib/avsddac.lib
+
+read_liberty -max ./lib/sky130_fd_sc_hd__tt_025C_1v80.lib
+
+read_liberty -max ./lib/avsdpll.lib
+
+read_liberty -max ./lib/avsddac.lib
+
+read_verilog ../output/synth/vsdbabysoc.synth.v
+
+link_design vsdbabysoc
+
+read_sdc ./sdc/vsdbabysoc_synthesis.sdc
+
+report_checks -path_delay min_max -format full_clock_expanded -digits 4
+```
+
+![Screenshot from 2024-10-29 00-13-26](https://github.com/user-attachments/assets/245f6051-2b42-4a17-87b4-63f3ab01339d)
+
+
+Setup Time:
+
+![Screenshot from 2024-10-28 23-44-47](https://github.com/user-attachments/assets/e337e543-ea13-459f-8c85-f82869c5f58e)
+
+Hold Time:
+
+![Screenshot from 2024-10-28 23-44-30](https://github.com/user-attachments/assets/99456d0c-ad8f-4c26-ad38-ed52f4fc368f)
+
+
+
+</details>
