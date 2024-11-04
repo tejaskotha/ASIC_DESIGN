@@ -3386,6 +3386,227 @@ Hold Time:
 
 ![Screenshot from 2024-10-28 23-44-30](https://github.com/user-attachments/assets/99456d0c-ad8f-4c26-ad38-ed52f4fc368f)
 
+</details>
+
+
+<details>
+<summary><strong>Lab 12</strong></summary>
+
+## STA comparison for various sky libraries
+
+Store all the sky `lib` files in a folder named `timing_libs`. Now, go to `VSDBabySoC/src` and create a tickle file `sta_across_pvt.tcl` . The below block is the content of the tickle file:
+
+```
+set list_of_lib_files(1) "sky130_fd_sc_hd__ff_100C_1v65.lib"
+set list_of_lib_files(2) "sky130_fd_sc_hd__ff_100C_1v95.lib"
+set list_of_lib_files(3) "sky130_fd_sc_hd__ff_n40C_1v56.lib"
+set list_of_lib_files(4) "sky130_fd_sc_hd__ff_n40C_1v65.lib"
+set list_of_lib_files(5) "sky130_fd_sc_hd__ff_n40C_1v76.lib"
+set list_of_lib_files(6) "sky130_fd_sc_hd__ff_n40C_1v95.lib"
+set list_of_lib_files(7) "sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part1"
+set list_of_lib_files(8) "sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part2"
+set list_of_lib_files(9) "sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part3"
+set list_of_lib_files(10) "sky130_fd_sc_hd__ss_100C_1v40.lib"
+set list_of_lib_files(11) "sky130_fd_sc_hd__ss_100C_1v60.lib"
+set list_of_lib_files(12) "sky130_fd_sc_hd__ss_n40C_1v28.lib"
+set list_of_lib_files(13) "sky130_fd_sc_hd__ss_n40C_1v35.lib"
+set list_of_lib_files(14) "sky130_fd_sc_hd__ss_n40C_1v40.lib"
+set list_of_lib_files(15) "sky130_fd_sc_hd__ss_n40C_1v44.lib"
+set list_of_lib_files(16) "sky130_fd_sc_hd__ss_n40C_1v60.lib"
+set list_of_lib_files(17) "sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part1"
+set list_of_lib_files(18) "sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part2"
+set list_of_lib_files(19) "sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part3"
+set list_of_lib_files(20) "sky130_fd_sc_hd__ss_n40C_1v76.lib"
+set list_of_lib_files(21) "sky130_fd_sc_hd__tt_025C_1v80.lib"
+set list_of_lib_files(22) "sky130_fd_sc_hd__tt_100C_1v80.lib"
+
+for {set i 1} {$i <= [array size list_of_lib_files]} {incr i} {
+read_liberty ./timing_libs/$list_of_lib_files($i)
+read_verilog ../output/synth/vsdbabysoc.synth.v
+link_design vsdbabysoc
+read_sdc ./sdc/vsdbabysoc_synthesis.sdc
+check_setup -verbose
+report_checks -path_delay min_max -fields {nets cap slew input_pins fanout} -digits {4} > ./sta_output/min_max_$list_of_lib_files($i).txt
+
+}
+
+```
+
+
+
+constraints file:
+
+
+
+
+Now, run the following commands:
+
+```
+cd VSDBabySoC/src
+
+sta
+
+source sta_across_pvt.tcl
+```
+
+![Screenshot from 2024-11-04 17-48-59](https://github.com/user-attachments/assets/f27eb01a-640f-4e4c-a0ad-6e141471f68a)
+
+table:
+
+![Screenshot from 2024-11-04 17-40-29](https://github.com/user-attachments/assets/a3956a3b-0445-49f9-bcef-a346a22f2d8c)
+
+
+
+Graphs:
+
+**Worst Setup Slack:**
+
+![image](https://github.com/user-attachments/assets/33e153fc-1b12-4916-9a60-17fcbe1c62a1)
+
+
+
+**Worst Hold Slack:**
+
+![image](https://github.com/user-attachments/assets/a5105677-7f14-48ae-a035-0013a205fd03)
+
+
+
+<details>
+<summary><strong>Timing Reports:</strong></summary>
+	
+**sky130_fd_sc_hd__ff_100C_1v65.lib:**
+![Screenshot from 2024-11-04 17-54-15](https://github.com/user-attachments/assets/d84ea20e-f566-4959-94d8-f1e4568ea545)
+
+![Screenshot from 2024-11-04 17-54-30](https://github.com/user-attachments/assets/09e15494-c5fc-45e2-b5e3-6d284dce6e7c)
+
+
+
+**sky130_fd_sc_hd__ff_100C_1v95.lib:**
+
+![Screenshot from 2024-11-04 17-54-51](https://github.com/user-attachments/assets/85221735-09ed-48a5-b598-7d2c202af44d)
+![Screenshot from 2024-11-04 17-55-05](https://github.com/user-attachments/assets/dde3a009-9305-444b-b2e5-9fc2f257206f)
+
+
+
+**sky130_fd_sc_hd__ff_n40C_1v56.lib:**
+
+![Screenshot from 2024-11-04 17-55-20](https://github.com/user-attachments/assets/bdf104ce-92c7-4841-b777-51bcc2a03bc8)
+
+![Screenshot from 2024-11-04 17-55-41](https://github.com/user-attachments/assets/9a782463-1d61-4388-b552-f5967db18fc6)
+
+**sky130_fd_sc_hd__ff_n40C_1v65.lib:**
+![Screenshot from 2024-11-04 17-56-00](https://github.com/user-attachments/assets/13055a32-9f09-4e3f-b6e8-308682dd5cd8)
+
+![Screenshot from 2024-11-04 17-56-12](https://github.com/user-attachments/assets/467b1367-9b9e-474d-bdb9-c0cd2eb0cdb8)
+
+
+**sky130_fd_sc_hd__ff_n40C_1v76.lib:**
+![Screenshot from 2024-11-04 17-56-30](https://github.com/user-attachments/assets/b720f071-35bf-4690-9ce5-fc3b74ea6b2e)
+
+![Screenshot from 2024-11-04 17-56-44](https://github.com/user-attachments/assets/b5bef9e4-7b08-4a38-b3f0-80d0b51b8d4f)
+
+
+**sky130_fd_sc_hd__ff_n40C_1v95.lib:**
+![Screenshot from 2024-11-04 18-01-07](https://github.com/user-attachments/assets/25af82f6-25ee-4667-a8df-cdd2b069f02f)
+![Screenshot from 2024-11-04 18-01-18](https://github.com/user-attachments/assets/b46693bf-4d28-480e-9fdf-9faa47ba41d5)
+
+
+
+**sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part1:**
+
+![Screenshot from 2024-11-04 18-01-35](https://github.com/user-attachments/assets/867289fe-8893-4d48-bf75-b037d4645ebe)
+![Screenshot from 2024-11-04 18-01-50](https://github.com/user-attachments/assets/fc154de1-ca27-4c04-b565-f98195e2d12b)
+
+
+**sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part2:**
+![Screenshot from 2024-11-04 18-02-07](https://github.com/user-attachments/assets/9f667121-4e8c-4c75-93f0-da27cb32892c)
+
+![Screenshot from 2024-11-04 18-02-20](https://github.com/user-attachments/assets/80f313b2-1121-4f39-846e-a5a784e64fae)
+
+
+**sky130_fd_sc_hd__ff_n40C_1v95_ccsnoise.lib.part3:**
+![Screenshot from 2024-11-04 18-02-38](https://github.com/user-attachments/assets/a2c66a2b-eda2-4eb4-b407-9e0d5b1dec45)
+
+![Screenshot from 2024-11-04 18-02-49](https://github.com/user-attachments/assets/ba9a459e-8c7b-4852-bcba-e183a791178d)
+
+
+
+**sky130_fd_sc_hd__ss_100C_1v40.lib:**
+![Screenshot from 2024-11-04 18-03-09](https://github.com/user-attachments/assets/ace0a8c1-41ee-4917-9341-a293dce2059f)
+![Screenshot from 2024-11-04 18-03-25](https://github.com/user-attachments/assets/6f28f496-5f74-45a9-a72e-fd3f999408f2)
+
+
+
+**sky130_fd_sc_hd__ss_100C_1v60.lib:**
+
+![Screenshot from 2024-11-04 18-07-58](https://github.com/user-attachments/assets/1656b1cd-4133-4ea2-be0d-3cde8114a3da)
+
+![Screenshot from 2024-11-04 18-08-12](https://github.com/user-attachments/assets/ed69aba0-931f-42f6-a83a-84a68cf1bfa3)
+
+**sky130_fd_sc_hd__ss_n40C_1v28.lib:**
+![Screenshot from 2024-11-04 18-08-27](https://github.com/user-attachments/assets/493e2d5e-9c83-4afb-abac-a0b424278209)
+
+![Screenshot from 2024-11-04 18-08-42](https://github.com/user-attachments/assets/2719058f-c98f-41a0-adea-3da18b27cfc5)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v35.lib:**
+![Screenshot from 2024-11-04 18-09-09](https://github.com/user-attachments/assets/f795171a-fbd3-458f-987f-beb063297a7e)
+![Screenshot from 2024-11-04 18-09-25](https://github.com/user-attachments/assets/135e33f8-ef83-4120-ade1-aa37094852fb)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v40.lib:**
+
+![Screenshot from 2024-11-04 18-09-45](https://github.com/user-attachments/assets/935867ff-024c-4863-91d7-d0e1bd2efb79)
+
+![Screenshot from 2024-11-04 18-09-56](https://github.com/user-attachments/assets/d6e73496-c19c-441d-bd32-d95b8ebc9ff2)
+
+**sky130_fd_sc_hd__ss_n40C_1v44.lib:**
+
+![Screenshot from 2024-11-04 18-10-10](https://github.com/user-attachments/assets/e5ec4d36-7111-4465-90b5-5d4f907661b6)
+
+![Screenshot from 2024-11-04 18-10-21](https://github.com/user-attachments/assets/a9c6e636-4a18-449f-ab0d-1ad72f48b4bc)
+
+**sky130_fd_sc_hd__ss_n40C_1v60.lib:**
+
+![Screenshot from 2024-11-04 18-10-38](https://github.com/user-attachments/assets/187738da-e8aa-464b-92f3-d1893d76fe7c)
+![Screenshot from 2024-11-04 18-10-47](https://github.com/user-attachments/assets/3fb5a71e-e0e3-4ec0-ae8e-ece594584dd3)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part1:**
+
+![Screenshot from 2024-11-04 18-11-03](https://github.com/user-attachments/assets/14df8a9f-306f-4eca-bafd-8625f3118493)
+
+![Screenshot from 2024-11-04 18-11-15](https://github.com/user-attachments/assets/3f1d7443-2932-42d9-97df-217b8e196d4d)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part2:**
+![Screenshot from 2024-11-04 18-11-30](https://github.com/user-attachments/assets/94f8a8a3-700e-4946-8fd6-a13422830075)
+
+![Screenshot from 2024-11-04 18-11-46](https://github.com/user-attachments/assets/796b9c6f-1998-4ebc-85fe-a6a1e014315f)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v60_ccsnoise.lib.part3:**
+![Screenshot from 2024-11-04 18-12-01](https://github.com/user-attachments/assets/99b9a361-31bc-443b-8859-8add547eedd9)
+
+![Screenshot from 2024-11-04 18-12-16](https://github.com/user-attachments/assets/c5aff0f5-c530-4a53-82da-5ea0e965586e)
+
+
+**sky130_fd_sc_hd__ss_n40C_1v76.lib:**
+![Screenshot from 2024-11-04 18-12-31](https://github.com/user-attachments/assets/6b252ac7-c5f1-481f-b744-d58e13c8b7dd)
+
+![Screenshot from 2024-11-04 18-12-41](https://github.com/user-attachments/assets/1ab92b48-50de-4267-aa3a-7a6b080929c7)
+
+
+**sky130_fd_sc_hd__tt_025C_1v80.lib:**
+![Screenshot from 2024-11-04 18-12-57](https://github.com/user-attachments/assets/f91d40cc-a7a6-4dc3-8ef3-6ca0c6a4d47d)
+![Screenshot from 2024-11-04 18-13-11](https://github.com/user-attachments/assets/3910b804-491f-4bbf-8de8-a30bfe759304)
+
+
+**sky130_fd_sc_hd__tt_100C_1v80.lib:**
+![Screenshot from 2024-11-04 18-13-32](https://github.com/user-attachments/assets/8f68853c-f818-43c9-8e0b-df56ba5c06a8)
+
+![Screenshot from 2024-11-04 18-13-47](https://github.com/user-attachments/assets/9a76227b-25fa-4744-b1db-6c75827783a8)
 
 
 </details>
+
