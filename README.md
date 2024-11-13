@@ -3608,7 +3608,629 @@ Graphs:
 ![Screenshot from 2024-11-04 18-13-32](https://github.com/user-attachments/assets/8f68853c-f818-43c9-8e0b-df56ba5c06a8)
 
 ![Screenshot from 2024-11-04 18-13-47](https://github.com/user-attachments/assets/9a76227b-25fa-4744-b1db-6c75827783a8)
+</details>
+</details>
+<details>
+<summary><strong>Lab 13</strong></summary>
 
+<details>
+<summary><strong>Day 1</strong> Inception of open-source EDA, OpenLane and Sky130 PDK</summary>
+
+## Inception of open-source EDA, OpenLane and Sky130 PDK
+
+**QFN-48 Package**: The QFN-48 is a compact leadless package with 48 connection pads around its perimeter, providing excellent thermal and electrical performance, ideal for high-density applications.
+
+![Screenshot from 2024-11-11 14-32-57](https://github.com/user-attachments/assets/3f1237c7-c6a6-453f-9655-636f8778eb9c)
+
+**Chip**: An integrated circuit (IC) on a silicon substrate with various functional blocks like memory, processors, and I/O, designed for specific electronics applications.
+
+![Screenshot from 2024-11-11 14-33-11](https://github.com/user-attachments/assets/32a46c31-bde4-46b7-807a-5f09e7a42a82)
+
+**Pads**: Small metallic contact points on a chip or package, used to connect internal circuitry with external connections, enabling signal transfer.
+
+**Core**: The main processing unit of a chip, containing functional logic optimized for power and performance.
+
+**Die**: The section of a silicon wafer containing an individual IC before packaging, hosting all the active circuitry of the chip.
+
+![Screenshot from 2024-11-11 14-33-23](https://github.com/user-attachments/assets/ff797bc6-ea8e-4bd9-be22-e3cf8ce4df95)
+
+**IPs (Intellectual Properties)**: Pre-designed functional modules, such as USB controllers or memory interfaces, licensed for reuse in various designs to save development time and costs.
+
+![Screenshot from 2024-11-11 14-33-32](https://github.com/user-attachments/assets/4e0b10e5-eea2-4b68-a42c-3db071423e38)
+
+---
+
+### Software to Hardware Execution Flow
+
+When running an application on hardware, it first enters the system software layer, which translates it to binary form. Key components here include the Operating System (OS), Compiler, and Assembler.
+
+1. **OS**: Breaks down application functions written in high-level languages (e.g., C, Java) and passes them to a compiler.
+2. **Compiler**: Translates functions into hardware-specific low-level instructions.
+3. **Assembler**: Converts these instructions into binary code, which the hardware can execute.
+
+![Screenshot from 2024-11-11 14-33-50](https://github.com/user-attachments/assets/0f07a5f9-9ce0-457e-a7af-1caffa64f809)
+
+For instance, take a stopwatch app running on a RISC-V core. The OS generates a function in C, which is sent to the compiler. The compiler produces RISC-V-specific instructions adapted to the architecture. These instructions are then processed by the assembler, converting them to binary code. This binary code is then integrated into the chip layout, allowing the hardware to execute the intended functionality.
+
+![Screenshot from 2024-11-11 14-34-04](https://github.com/user-attachments/assets/1d9b1e0e-1170-4709-98b9-3f2f71f28098)
+
+For the above stopwatch the below figure shows the input and output of the compiler and assembler.
+
+![Screenshot from 2024-11-11 14-34-16](https://github.com/user-attachments/assets/205f26fb-62b5-40d4-8bf2-ef96fc9ff711)
+
+The compiler produces instructions specific to the architecture, and the assembler converts these into corresponding binary patterns. To execute them on hardware, an RTL (written in a Hardware Description Language) interprets and implements the instructions. This RTL design is then synthesized into a netlist, represented by interconnected logic gates. Finally, the netlist undergoes physical design implementation, preparing it for chip fabrication.
+
+![Screenshot from 2024-11-11 14-34-28](https://github.com/user-attachments/assets/f4df4c33-62e9-4a78-9f14-98282aa9c2a2)
+
+---
+
+### Components of ASIC Design
+
+- **RTL IPs**: Verified circuit blocks (adders, flip-flops) in HDL, used to accelerate complex designs.
+- **EDA Tools**: Automates ASIC tasks like synthesis, optimization, and timing analysis, ensuring performance meets requirements.
+- **PDK Data**: Semiconductor foundry files defining the manufacturing process, ensuring ASIC designs are fabrication-ready.
+
+![Screenshot from 2024-11-11 14-34-40](https://github.com/user-attachments/assets/610fc21f-8262-4d4b-b868-01a9d84b40ca)
+
+---
+
+### Simplified RTL to GDSII Flow
+
+![Screenshot from 2024-11-11 14-34-49](https://github.com/user-attachments/assets/9d8d2664-476d-4cd6-b5b3-7e0aed241a2f)
+
+1. **RTL Design**: Describes circuit function using HDLs like Verilog or VHDL.
+2. **RTL Synthesis**: Converts RTL to a gate-level netlist with optimized cells.
+3. **Floor and Power Planning**: Lays out major components, power grid, and I/O.
+4. **Placement**: Allocates cells to minimize wirelength and signal delay.
+5. **Clock Tree Synthesis (CTS)**: Distributes clock signals uniformly to reduce skew.
+6. **Routing**: Connects components while meeting design rules.
+7. **Sign-off**: Final verification, confirming design readiness for fabrication.
+8. **GDSII Generation**: Creates the layout for chip production.
+
+---
+
+### OpenLane ASIC Flow Overview
+
+![Screenshot from 2024-11-11 14-34-58](https://github.com/user-attachments/assets/414fbce3-7665-4375-9123-42a11f41ccec)
+
+1. **RTL Synthesis and Technology Mapping**: Uses Yosys and ABC.
+2. **Static Timing Analysis**: Uses OpenSTA.
+3. **Floor Planning**: Utilizes init_fp, ioPlacer, pdn, tapcell.
+4. **Placement**: Managed by RePLace, Resizer, OpenPhySyn, and OpenDP.
+5. **Clock Tree Synthesis**: Uses TritonCTS.
+6. **Fill Insertion**: Uses OpenDP.
+7. **Routing**: Uses FastRoute/CU-GR (global) and TritonRoute/DR-CU (detailed).
+8. **SPEF Extraction**: OpenRCX for parasitic data.
+9. **GDSII Output**: Uses Magic and KLayout.
+10. **Design Rule Checks**: Magic and KLayout.
+11. **Layout vs. Schematic Check**: Uses Netgen.
+12. **Antenna Checks**: Handled by Magic.
+
+---
+
+### OpenLane Directory Structure
+
+```plaintext
+├── OpenLane            # Tool directory
+│   ├── designs         # Holds all designs
+│   │   └── picorv32a   # Example design
+├── pdks                # PDK-related files
+│   ├── skywater-pdk    # Skywater 130nm PDKs
+│   ├── open-pdks       # Scripts for open-source tool compatibility
+│   ├── sky130A         # Open-source compatible PDK variant
+│   │   ├── libs.ref    # Node-specific files (e.g., timing, tech LEF)
+│   │   ├── libs.tech   # Tool-specific files (e.g., for KLayout)
+```
+
+### Running Synthesis in OpenLane
+
+1. **Navigate and start OpenLane**:
+   ```bash
+   cd Desktop/work/tools/openlane_working_dir/openlane
+   docker
+   ./flow.tcl -interactive
+   package require openlane 0.9
+   prep -design picorv32a
+   run_synthesis
+   ```
+
+  ![Screenshot 2024-11-13 190133](https://github.com/user-attachments/assets/05ec0450-3aec-4c43-9f7a-1e45dc9081ff)
+
+
+
+3. **View the Netlist**:
+   ```bash
+   cd designs/picorv32a/runs/13-11_13-29/results/synthesis/
+   gedit picorv32a.synthesis.v
+   ```
+
+  ![Screenshot 2024-11-13 190913](https://github.com/user-attachments/assets/434e1082-37f7-42d4-8b82-563e0799acce)
+
+
+5. **Yosys Report**:
+   ```bash
+   cd ../..
+   cd reports/synthesis
+   gedit 1-yosys_4.stat.rpt
+   ```
+
+  <img width="475" alt="image" src="https://github.com/user-attachments/assets/1a2fa30b-18cd-467c-830a-7dc1db8e9536">
+
+
+  
+
+**Report:**
+
+```
+28. Printing statistics.
+
+=== picorv32a ===
+
+   Number of wires:              14596
+   Number of wire bits:          14978
+   Number of public wires:        1565
+   Number of public wire bits:    1947
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:              14876
+     sky130_fd_sc_hd__a2111o_2       1
+     sky130_fd_sc_hd__a211o_2       35
+     sky130_fd_sc_hd__a211oi_2      60
+     sky130_fd_sc_hd__a21bo_2      149
+     sky130_fd_sc_hd__a21boi_2       8
+     sky130_fd_sc_hd__a21o_2        57
+     sky130_fd_sc_hd__a21oi_2      244
+     sky130_fd_sc_hd__a221o_2       86
+     sky130_fd_sc_hd__a22o_2      1013
+     sky130_fd_sc_hd__a2bb2o_2    1748
+     sky130_fd_sc_hd__a2bb2oi_2     81
+     sky130_fd_sc_hd__a311o_2        2
+     sky130_fd_sc_hd__a31o_2        49
+     sky130_fd_sc_hd__a31oi_2        7
+     sky130_fd_sc_hd__a32o_2        46
+     sky130_fd_sc_hd__a41o_2         1
+     sky130_fd_sc_hd__and2_2       157
+     sky130_fd_sc_hd__and3_2        58
+     sky130_fd_sc_hd__and4_2       345
+     sky130_fd_sc_hd__and4b_2        1
+     sky130_fd_sc_hd__buf_1       1656
+     sky130_fd_sc_hd__buf_2          8
+     sky130_fd_sc_hd__conb_1        42
+     sky130_fd_sc_hd__dfxtp_2     1613
+     sky130_fd_sc_hd__inv_2       1615
+     sky130_fd_sc_hd__mux2_1      1224
+     sky130_fd_sc_hd__mux2_2         2
+     sky130_fd_sc_hd__mux4_1       221
+     sky130_fd_sc_hd__nand2_2       78
+     sky130_fd_sc_hd__nor2_2       524
+     sky130_fd_sc_hd__nor2b_2        1
+     sky130_fd_sc_hd__nor3_2        42
+     sky130_fd_sc_hd__nor4_2         1
+     sky130_fd_sc_hd__o2111a_2       2
+     sky130_fd_sc_hd__o211a_2       69
+     sky130_fd_sc_hd__o211ai_2       6
+     sky130_fd_sc_hd__o21a_2        54
+     sky130_fd_sc_hd__o21ai_2      141
+     sky130_fd_sc_hd__o21ba_2      209
+     sky130_fd_sc_hd__o21bai_2       1
+     sky130_fd_sc_hd__o221a_2      204
+     sky130_fd_sc_hd__o221ai_2       7
+     sky130_fd_sc_hd__o22a_2      1312
+     sky130_fd_sc_hd__o22ai_2       59
+     sky130_fd_sc_hd__o2bb2a_2     119
+     sky130_fd_sc_hd__o2bb2ai_2     92
+     sky130_fd_sc_hd__o311a_2        8
+     sky130_fd_sc_hd__o31a_2        19
+     sky130_fd_sc_hd__o31ai_2        1
+     sky130_fd_sc_hd__o32a_2       109
+     sky130_fd_sc_hd__o41a_2         2
+     sky130_fd_sc_hd__or2_2       1088
+     sky130_fd_sc_hd__or2b_2        25
+     sky130_fd_sc_hd__or3_2         68
+     sky130_fd_sc_hd__or3b_2         5
+     sky130_fd_sc_hd__or4_2         93
+     sky130_fd_sc_hd__or4b_2         6
+     sky130_fd_sc_hd__or4bb_2        2
+
+   Chip area for module '\picorv32a': 147712.918400
+
+```
+
+**Report Summary**:
+
+```
+Flop ratio = Number of D Flip flops = 1613  = 0.1084
+             ______________________   _____
+             Total Number of cells    14876
+```
+
+- **Wire Count**: 14,596
+- **Cell Count**: 14,876, including specific cells like `sky130_fd_sc_hd__a2111o_2`, `sky130_fd_sc_hd__and2_2`.
+- **D Flip-flops**: 1,613 with a flop ratio of 0.1084
 
 </details>
+
+<details>
+<summary><strong>Day-2:</strong>  Good floorplan vs bad floorplan and introduction to library cells </summary>
+
+## Good floorplan vs bad floorplan and introduction to library cells 
+ 
+### **Utilization Factor and Aspect Ratio**
+In IC floor planning, the utilization factor and aspect ratio are key parameters. The utilization factor is defined as the area occupied by the netlist divided by the total core area. Although a utilization factor of 1 (100%) is ideal, practical designs aim for a factor of 0.5 to 0.6 to provide room for buffer zones, routing channels, and adjustments. The aspect ratio, calculated as height divided by width, determines the shape of the chip. An aspect ratio of 1 indicates a square, while other values create a rectangular layout, with the specific ratio chosen based on functional, packaging, and manufacturing requirements.
+
+```
+Utilization Factor =  Area occupied by netlist
+                     __________________________
+                         Total area of core
+                         
+
+Aspect Ratio =  Height
+               ________
+                Width
+```
+
+### **Pre-placed Cells**
+Pre-placed cells are key functional blocks—like memory, custom processors, and analog circuits—that are placed manually in fixed positions. These blocks are crucial for performance and are kept fixed during placement and routing to maintain functionality and layout integrity.
+
+### **Decoupling Capacitors**
+Decoupling capacitors stabilize power supply voltages near logic circuits during transient events. Acting as local energy reserves, they reduce voltage fluctuations, crosstalk, and EMI, ensuring reliable power delivery to sensitive circuits.
+
+### **Power Planning**
+Effective power planning involves creating a power and ground mesh to evenly distribute VDD and VSS across the chip. This arrangement stabilizes power delivery, reduces voltage drops, and enhances efficiency. Multiple power and ground points further support power needs and reduce the risks of instability.
+
+### **Pin Placement**
+Strategic pin placement, or I/O planning, is essential for functionality and reliability. Proper pin assignments minimize signal degradation, manage heat dissipation, and support thermal stability. Placing power and ground pins strategically enhances both signal strength and manufacturability.
+
+### **Floorplanning with OpenLANE**
+To initiate floorplanning in OpenLANE, execute these commands:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+```
+
+```
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+run_synthesis
+run_floorplan
+```
+
+![6](https://github.com/user-attachments/assets/45b7ab86-7a1a-409b-8512-1faca81e8f3b)
+
+![7](https://github.com/user-attachments/assets/0337802f-8d1d-4f40-923e-ec21cd5dcf91)
+
+Then, in a new terminal, access the floorplan file as follows:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-28/results/floorplan
+gedit picorv32a.floorplan.def
+```
+![8](https://github.com/user-attachments/assets/4e392782-99bb-4dfb-8126-09e68f33bf2f)
+
+According to the floorplan definitions:
+
+- 1000 Unit Distance = 1 Micron
+- Die width in unit distance = 660685−0 = 660685  
+- Die height in unit distance = 671405−0 = 671405  
+- Width in microns = 660685 / 1000 = 660.685 Microns  
+- Height in microns = 671405 / 1000 = 671.405 Microns  
+- Die area in microns² = 660.685 × 671.405 = 443587.212425 Microns²  
+
+To view the floorplan in Magic:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-28/results/floorplan/
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
+```
+![9](https://github.com/user-attachments/assets/d9840e47-8674-4907-aaee-626c976c2180)
+
+
+### **Decap and Tap Cells**
+
+Decap cells and tap cells are placed to manage power delivery and maintain electrical connectivity across the chip.
+
+![91](https://github.com/user-attachments/assets/7f8e09de-ac57-4f8e-83bd-1d2b556f0737)
+
+
+### **Unplaced Standard Cells at Origin**
+
+![92](https://github.com/user-attachments/assets/7e09a833-01b6-4e21-bf17-849ed2fc1b94)
+
+```
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+run_synthesis
+run_floorplan
+run_placement
+```
+
+![93](https://github.com/user-attachments/assets/70f206ca-ebc8-432f-8176-5a27fa4e3799)
+
+View the placement in Magic with:
+
+```
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-56/results/placement/
+magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
+```
+
+![94](https://github.com/user-attachments/assets/ea69e54b-2497-4ecc-952e-195cc10be485)
+
+![95](https://github.com/user-attachments/assets/7d8fc7fd-385f-4289-af88-7456b2e51b30)
+
+### **Cell Design and Characterization Flow**
+The library provides essential cell information, including various sizes, functionalities, and threshold voltages. A typical design flow includes:
+
+- Inputs: Process Design Kits (PDKs) for DRC & LVS, SPICE models, and library/user-defined specs.
+- Steps: Circuit design, layout design (using techniques like Euler’s path and stick diagrams), parasitic extraction, and characterization (timing, noise, power).
+- Outputs: CDL, LEF, GDSII, extracted SPICE netlist (.cir), and timing/noise/power .lib files.
+
+### **Standard Cell Characterization Flow**
+Standard cell characterization includes:
+
+1. Reading models and tech files
+2. Loading the extracted SPICE netlist
+3. Recognizing cell behavior
+4. Reading subcircuits
+5. Applying power sources
+6. Stimulating characterization setup
+7. Setting output capacitance loads
+8. Running simulation commands
+
+These steps are processed by the GUNA software to produce timing, noise, and power models.
+
+### **Timing Parameters**
+
+| Timing Definition     | Value       |
+|-----------------------|-------------|
+| slew_low_rise_thr     | 20%         |
+| slew_high_rise_thr    | 80%         |
+| slew_low_fall_thr     | 20%         |
+| slew_high_fall_thr    | 80%         |
+| in_rise_thr           | 50%         |
+| in_fall_thr           | 50%         |
+| out_rise_thr          | 50%         |
+| out_fall_thr          | 50%         |
+
+**Propagation Delay**: Time for an input change to reach 50% of its final value and affect the output similarly.
+
+```
+rise delay =  time(out_fall_thr) - time(in_rise_thr)
+```
+
+**Transition Time**: Time taken for signal transitions between 10% to 90% or 20% to 80% of signal levels.
+
+```
+Fall transition time: time(slew_high_fall_thr) - time(slew_low_fall_thr)
+Rise transition time: time(slew_high_rise_thr) - time(slew_low_rise_thr)
+```
+
+</details>
+
+<details>
+<summary><strong>Day-3:</strong> Design library cell using Magic Layout and ngspice characterization </summary>
+
+## CMOS Inverter NGSPICE Simulations
+
+#### SPICE Deck for a CMOS Inverter Simulation
+
+1. **Netlist Creation**: Define a netlist for the CMOS inverter circuit, labeling nodes clearly (e.g., `input`, `output`, `ground`, and `supply`) for easier identification during SPICE simulation.
+
+2. **Device Sizing**: Define the Width-to-Length (W/L) ratios for the PMOS and NMOS transistors. Typically, the PMOS width is 2x to 3x the NMOS width for balanced drive strength.
+
+3. **Voltage Levels**: Set gate and supply voltages in multiples of the transistor length.
+
+4. **Node Naming**: Assign names (e.g., `VDD`, `GND`, `IN`, `OUT`) to nodes around each component in the SPICE netlist for easier reference.
+
+   <img width="953" alt="Screenshot 2024-11-12 at 11 23 10 PM" src="https://github.com/user-attachments/assets/cbd5664c-8342-4f0c-9cc9-1320c3d1ca68">
+
+
+5. **Simulation Commands**: For transient analysis, use:
+   ``` 
+   source [filename].cir 
+   run 
+   setplot 
+   dc1 
+   plot out vs in 
+   ```
+
+   <img width="938" alt="Screenshot 2024-11-12 at 11 23 32 PM" src="https://github.com/user-attachments/assets/4339530d-407c-4be8-a2de-ecdac84d3523">
+
+#### Simulation and Analysis
+
+- **Switching Threshold (Vm)**: Vm is the input voltage at which the inverter output switches between logic levels. For equal PMOS/NMOS sizes, Vm is around VDD/2. Adjusting PMOS or NMOS sizes shifts Vm higher or lower.
+
+- **SPICE Command for Threshold Calculation**:
+   ``` 
+   Vin in 0 2.5 
+   .op 
+   .dc Vin 0 2.5 0.05 
+   ```
+
+    <img width="950" alt="Screenshot 2024-11-12 at 11 23 49 PM" src="https://github.com/user-attachments/assets/09eb989c-2a66-4225-b15a-2ded2d9299ee">
+
+
+- **Transient Analysis for Propagation Delay**: SPICE command for pulse input:
+   ``` 
+   Vin in 0 0 pulse 0 2.5 0 10p 10p 1n 2n 
+   .op 
+   .tran 10p 4n 
+   ```
+
+    <img width="884" alt="Screenshot 2024-11-12 at 11 28 02 PM" src="https://github.com/user-attachments/assets/4f45f9d0-43ab-494e-8e18-c775f27509ae">
+
+#### Cloning the Custom Inverter Layout
+
+1. Clone the inverter:
+   ``` 
+   cd Desktop/work/tools/openlane_working_dir/openlane 
+   git clone https://github.com/nickson-jose/vsdstdcelldesign 
+   cd vsdstdcelldesign 
+   cp /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech . 
+   magic -T sky130A.tech sky130_inv.mag & 
+   ```
+
+   ![Screenshot from 2024-11-12 23-41-52](https://github.com/user-attachments/assets/7a9892ee-2b6f-4b28-98e1-b0f55c74fc26)
+
+#### CMOS Fabrication Process (16 Masks)
+
+1. **Substrate Preparation**: The process begins with silicon wafer preparation as the base for the circuit.
+
+2. **N-Well Formation**: Phosphorus impurities are implanted or diffused to create N-well regions on the substrate.
+
+3. **P-Well Formation**: P-well regions are formed similarly, using boron or other dopants through ion implantation or diffusion.
+
+4. **Gate Oxide Deposition**: A thin layer of silicon dioxide is deposited to act as the gate insulator.
+
+5. **Polysilicon Deposition**: A polysilicon layer is deposited on the gate oxide to form the gate electrode.
+
+6. **Polysilicon Masking and Etching**: Areas where polysilicon should remain are defined with a photoresist mask, and unprotected sections are etched away.
+
+7. **N-Well Masking and Implantation**: A mask preserves N-well regions while phosphorus or similar impurities are implanted in other areas.
+
+8. **P-Well Masking and Implantation**: A mask protects P-well regions, allowing boron or equivalent dopants to be implanted elsewhere.
+
+9. **Source/Drain Implantation**: Using masks, dopants (e.g., arsenic for NMOS, boron for PMOS) are implanted to form the source and drain regions.
+
+10. **Gate Formation**: The gate electrode is defined by etching the polysilicon layer, guided by a mask.
+
+11. **Source/Drain Masking and Etching**: Masks define the source and drain areas, followed by etching to clear the oxide from those regions.
+
+12. **Contact/Via Formation**: Holes are etched through the oxide layer to expose areas like the source/drain or polysilicon gates for contacts.
+
+13. **Metal Deposition**: A metal layer, usually aluminum or copper, is deposited to create electrical interconnections.
+
+14. **Metal Masking and Etching**: Metal interconnect patterns are defined using a photoresist mask, with etching to remove unneeded metal.
+
+15. **Passivation Layer Deposition**: A protective silicon dioxide or nitride layer is applied to shield metal interconnections.
+
+16. **Final Testing and Packaging**: Rigorous testing ensures chip functionality, after which functional chips are separated, packaged, and prepared for deployment.
+
+    <img width="773" alt="Screenshot 2024-11-12 at 11 46 46 PM" src="https://github.com/user-attachments/assets/1b5b48f3-ee2d-47a5-8ebd-41614f33b050">
+
+#### Inverter Layout
+
+![Screenshot from 2024-11-12 23-54-13](https://github.com/user-attachments/assets/2a56754f-c532-49fd-9b5b-fb856f12012a)
+
+![Screenshot from 2024-11-12 23-54-26](https://github.com/user-attachments/assets/7674039b-6ed1-4ed1-9897-902f042e7096)
+
+![Screenshot from 2024-11-12 23-54-39](https://github.com/user-attachments/assets/7d601e97-0fd2-458a-908f-90a123c57d53)
+
+![Screenshot from 2024-11-12 23-55-26](https://github.com/user-attachments/assets/1445b939-6717-4fb0-8ff4-7a4edb397fbd)
+
+![Screenshot from 2024-11-12 23-55-53](https://github.com/user-attachments/assets/da582617-e15b-47c5-b1f5-bd0777e9461e)
+
+#### SPICE Extraction with Magic
+
+Run commands in `tkcon` to extract and generate SPICE:
+``` 
+pwd 
+extract all 
+ext2spice cthresh 0 rthresh 0 
+ext2spice 
+```
+
+![Screenshot from 2024-11-13 00-06-58](https://github.com/user-attachments/assets/da8b3fa8-5e39-480e-a472-58a994479b1a)
+
+#### Modifying SPICE File for Transient Analysis
+
+![Screenshot from 2024-11-13 00-07-35](https://github.com/user-attachments/assets/caa04964-e21d-49b0-9f7b-4c76b94fda3c)
+
+![Screenshot from 2024-11-13 00-07-42](https://github.com/user-attachments/assets/0e09dbd7-2872-48c8-981a-b9ab25284ab6)
+
+Edit `sky130_inv.spice`:
+```
+* SPICE3 file created from sky130_inv.ext - technology: sky130A
+
+.option scale=0.01u
+.include ./libs/pshort.lib
+.include ./libs/nshort.lib
+
+M1000 Y A VGND VGND nshort_model.0 w=35 l=23
++  ad=1.44n pd=0.152m as=1.37n ps=0.148m
+M1001 Y A VPWR VPWR pshort_model.0 w=37 l=23
++  ad=1.44n pd=0.152m as=1.52n ps=0.156m
+
+VDD VPWR 0 3.3V
+VSS VGND 0 0V
+Va A VGND PULSE(0V 3.3V 0 0.1ns 0.1ns 2ns 4ns)
+
+.tran 1n 20n
+.control
+run
+.endc
+.end
+```
+
+To simulate:
+``` 
+ngspice sky130_inv.spice 
+plot y vs time a 
+```
+![Screenshot from 2024-11-13 00-12-43](https://github.com/user-attachments/assets/86b19c94-3ce9-4e95-8aa3-6833c976202e)
+
+![Screenshot from 2024-11-13 00-13-12](https://github.com/user-attachments/assets/defbf5aa-4975-4f56-bcf1-af4b032145fd)
+
+
+#### Characterizing Slew Rate and Propagation Delay
+
+Using transient response:
+- **Rise Transition**: Time for output to rise from 20% to 80% of max value.
+- **Fall Transition**: Time for output to fall from 80% to 20%.
+- **Cell Rise/Fall Delay**: Difference in time for 50% output change compared to input transition.
+
+Example calculations:
+```
+Rise Transition : 2.24638 - 2.18242 =  0.06396 ns = 63.96 ps
+Fall Transition : 4.0955 - 4.05536 =  0.0419 ns = 41.9 ps
+Cell Rise Delay : 2.21144 - 2.15008 = 0.06136 ns = 61.36 ps
+Cell Fall Delay : 4.07807 - 4.05 =0.02 ns = 20 ps
+```
+
+#### Magic Tool DRC Rules Check
+
+Set up and run:
+``` 
+cd 
+wget http://opencircuitdesign.com/open_pdks/archive/drc_tests.tgz 
+tar xfz drc_tests.tgz 
+cd drc_tests 
+gvim .magicrc 
+magic -d XR & 
+```
+
+![Screenshot from 2024-11-13 00-18-20](https://github.com/user-attachments/assets/421d67f3-8c6e-46b8-9af5-df1339da4c91)
+
+![Screenshot from 2024-11-13 00-21-58](https://github.com/user-attachments/assets/dc4f6182-faba-4842-a6cb-b1c8f35bb9ae)
+
+Run DRC commands:
+``` 
+tech load sky130A.tech 
+drc check 
+drc why 
+```
+
+![Screenshot from 2024-11-13 00-33-24](https://github.com/user-attachments/assets/b99c626f-6e9f-4312-a934-31b964dc1a5c)
+
+![Screenshot from 2024-11-13 00-35-16](https://github.com/user-attachments/assets/fe5c1e08-92e6-46b5-9791-34731fd28a46)
+
+<img width="805" alt="Screenshot 2024-11-13 at 12 38 16 AM" src="https://github.com/user-attachments/assets/ddccab54-9579-42a6-80e2-a4b74dc21eea">
+
+</details>
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
 
