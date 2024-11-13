@@ -4670,6 +4670,101 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 ![Screenshot 2024-11-14 020554](https://github.com/user-attachments/assets/466a3315-a050-48cd-ae3e-30333074934c)
 
 </details>
+<details>
+<summary><strong>Day-5:</strong> Final steps for RTL2GDS using tritonRoute and openSTA </summary>
+
+##  Final steps for RTL2GDS using tritonRoute and openSTA 
+
+### 1. Perform generation of Power Distribution Network (PDN) and explore the PDN layout.
+
+Commands to perform all necessary stages up until now
+```
+
+cd Desktop/work/tools/openlane_working_dir/openlane
+docker
+
+./flow.tcl -interactive
+package require openlane 0.9
+prep -design picorv32a
+set lefs [glob $::env(DESIGN_DIR)/src/*.lef]
+add_lefs -src $lefs
+set ::env(SYNTH_STRATEGY) "DELAY 3"
+set ::env(SYNTH_SIZING) 1
+run_synthesis
+init_floorplan
+place_io
+tap_decap_or
+run_placement
+run_cts
+gen_pdn
+
+```
+Screenshots of power distribution network run
+
+![Screenshot from 2024-11-14 00-02-24](https://github.com/user-attachments/assets/3d625e37-11e9-4584-bdfe-ef8cbc7f57f7)
+![Screenshot from 2024-11-14 00-02-50](https://github.com/user-attachments/assets/36f07b0e-77e8-466a-b912-782d3d3c965f)
+![Screenshot from 2024-11-14 00-02-53](https://github.com/user-attachments/assets/9d71f8e2-aaf1-41e3-ad84-5c7ba6009d45)
+![Screenshot from 2024-11-14 00-03-02](https://github.com/user-attachments/assets/4226b564-44c6-47a1-b71e-ca6825614578)
+![Screenshot from 2024-11-14 00-03-07](https://github.com/user-attachments/assets/5cf49287-29af-4aea-81bc-03c0b3bdd3e1)
+
+<img width="993" alt="Screenshot 2024-11-14 at 1 14 54 AM" src="https://github.com/user-attachments/assets/9a2e38bd-9cae-47d2-9415-49884658d545">
+
+<img width="1010" alt="Screenshot 2024-11-14 at 1 15 02 AM" src="https://github.com/user-attachments/assets/df16bfeb-33a4-488d-96b6-d9d9d33e9077">
+
+
+## 2. Perfrom detailed routing using TritonRoute and explore the routed layout.
+Command to perform routing
+```
+echo $::env(CURRENT_DEF)
+echo $::env(ROUTING_STRATEGY)
+run_routing
+```
+Screenshots of routing run
+
+![Screenshot from 2024-11-14 00-25-50](https://github.com/user-attachments/assets/08b93b7f-bebe-482e-82ec-2cc0a751054b)
+![Screenshot from 2024-11-14 00-29-26](https://github.com/user-attachments/assets/e0cdb4e7-b24c-43e2-b7b6-107c961b786b)
+![Screenshot from 2024-11-14 00-34-39](https://github.com/user-attachments/assets/83684a88-d6be-471a-8b78-4a76bf2a2322)
+![Screenshot from 2024-11-14 00-34-32](https://github.com/user-attachments/assets/57eabce7-2021-4977-8df9-2b2a5eeb7d9b)
+
+
+<img width="1007" alt="Screenshot 2024-11-14 at 1 15 24 AM" src="https://github.com/user-attachments/assets/507ba59e-e8ce-4c0d-8d42-3f5d6b26c857">
+
+<img width="623" alt="Screenshot 2024-11-14 at 1 18 40 AM" src="https://github.com/user-attachments/assets/975f23b9-3129-40d0-915d-2a12fde2df7d">
+
+Screenshot of fast route guide present in openlane/designs/picorv32a/runs/13-11_18-24/tmp/routing directory
+
+![Screenshot from 2024-11-14 01-10-16](https://github.com/user-attachments/assets/34cdaa8c-3c9b-40f4-a146-cd09a6d637f2)
+
+
+## 3. Post-Route parasitic extraction using SPEF extractor.
+Commands for SPEF extraction using external tool
+```c
+
+cd Desktop/work/tools/SPEF_EXTRACTOR
+
+python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-24/tmp/merged.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-24/results/routing/picorv32a.def
+```
+
+## 4. Post-Route OpenSTA timing analysis with the extracted parasitics of the route.
+Commands to be run in OpenLANE flow to do OpenROAD timing analysis with integrated OpenSTA in OpenROAD
+```
+openroad
+read_lef /openLANE_flow/designs/picorv32a/runs/13-11_18-24/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/13-11_18-24/results/routing/picorv32a.def
+write_db pico_route.db
+read_db pico_route.db
+read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_18-24/results/synthesis/picorv32a.synthesis_preroute.v
+read_liberty $::env(LIB_SYNTH_COMPLETE)
+link_design picorv32a
+read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
+set_propagated_clock [all_clocks]
+read_spef /openLANE_flow/designs/picorv32a/runs/13-11_18-24/results/routing/picorv32a.spef
+report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
+exit
+
+```
+
+</details>
 
 </details>
 
