@@ -4527,7 +4527,8 @@ report_net -connections _13111_
 replace_cell _16171_ sky130_fd_sc_hd__nor3_2
 report_checks -fields {net cap slew input_pins} -digits 4
 ```
-![image](https://github.com/user-attachments/assets/49667f40-1eb1-42a8-ad22-0a287eb92de0)
+<img width="481" alt="image" src="https://github.com/user-attachments/assets/cbea21c4-b80e-4e8f-b8fd-ba8a774a49f9">
+
 
 We can observe that the tns has reduced to -402.45 from -403.54 and wns has reduced to -5.44 from -5.59
 
@@ -4614,11 +4615,11 @@ Now, enter the following commands for Post-CTS OpenROAD timing analysis:
 
 ```
 openroad
-read_lef /openLANE_flow/designs/picorv32a/runs/13-11_08-51/tmp/merged.lef
-read_def /openLANE_flow/designs/picorv32a/runs/13-11_08-51results/cts/picorv32a.cts.def
+read_lef /openLANE_flow/designs/picorv32a/runs/13-11_18-01/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/13-11_18-01/results/cts/picorv32a.cts.def
 write_db pico_cts.db
 read_db pico_cts.db
-read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_08-51/results/synthesis/picorv32a.synthesis_cts.v
+read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_18-01/results/synthesis/picorv32a.synthesis_cts.v
 read_liberty $::env(LIB_SYNTH_COMPLETE)
 link_design picorv32a
 read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
@@ -4626,12 +4627,12 @@ set_propagated_clock [all_clocks]
 report_checks -path_delay min_max -fields {slew trans net cap input_pins} -format full_clock_expanded -digits 4
 exit
 ```
+![Screenshot 2024-11-14 020323](https://github.com/user-attachments/assets/611e1f16-c390-430b-8985-fd3a6d95034c)
 
-![image](https://github.com/user-attachments/assets/7c6b4604-6a86-4e24-a2a0-ec2bb4259aeb)
+![Screenshot 2024-11-14 020408](https://github.com/user-attachments/assets/c88b6d3b-d79b-44db-bdc5-7e2a8be3981c)
+![Screenshot 2024-11-14 020435](https://github.com/user-attachments/assets/ab72fb88-1ee8-4c75-a722-e98955ef1f38)
 
-![image](https://github.com/user-attachments/assets/8d8d1a9b-187f-4680-8f9c-8d3bfab2976e)
 
-![image](https://github.com/user-attachments/assets/ada3e13a-58d7-4363-a458-e7a67c3bce4d)
 
 Now, enter the following commands for exploring post-CTS OpenROAD timing analysis by removing 'sky130_fd_sc_hd__clkbuf_1' cell from clock buffer list variable 'CTS_CLK_BUFFER_LIST':
 
@@ -4640,15 +4641,15 @@ echo $::env(CTS_CLK_BUFFER_LIST)
 set ::env(CTS_CLK_BUFFER_LIST) [lreplace $::env(CTS_CLK_BUFFER_LIST) 0 0]
 echo $::env(CTS_CLK_BUFFER_LIST)
 echo $::env(CURRENT_DEF)
-set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/13-11_08-51/results/placement/picorv32a.placement.def
+set ::env(CURRENT_DEF) /openLANE_flow/designs/picorv32a/runs/13-11_18-01/results/placement/picorv32a.placement.def
 run_cts
 echo $::env(CTS_CLK_BUFFER_LIST)
 openroad
-read_lef /openLANE_flow/designs/picorv32a/runs/13-11_08-51/tmp/merged.lef
-read_def /openLANE_flow/designs/picorv32a/runs/13-11_08-51/results/cts/picorv32a.cts.def
+read_lef /openLANE_flow/designs/picorv32a/runs/13-11_18-01/tmp/merged.lef
+read_def /openLANE_flow/designs/picorv32a/runs/13-11_18-01/results/cts/picorv32a.cts.def
 write_db pico_cts1.db
 read_db pico_cts.db
-read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_08-51/results/synthesis/picorv32a.synthesis_cts.v
+read_verilog /openLANE_flow/designs/picorv32a/runs/13-11_18-01/results/synthesis/picorv32a.synthesis_cts.v
 read_liberty $::env(LIB_SYNTH_COMPLETE)
 link_design picorv32a
 read_sdc /openLANE_flow/designs/picorv32a/src/my_base.sdc
@@ -4662,11 +4663,11 @@ set ::env(CTS_CLK_BUFFER_LIST) [linsert $::env(CTS_CLK_BUFFER_LIST) 0 sky130_fd_
 echo $::env(CTS_CLK_BUFFER_LIST)
 ```
 
-![image](https://github.com/user-attachments/assets/3fcd48ab-1c5e-4c46-815b-87ce2cb3480b)
+![Screenshot 2024-11-14 020505](https://github.com/user-attachments/assets/b9e01755-2d8d-46a4-b419-2d78a131310e)
 
-![image](https://github.com/user-attachments/assets/317f453b-8b56-4a3d-a4be-1d3609d70c85)
+![Screenshot 2024-11-14 020528](https://github.com/user-attachments/assets/a7d6da40-4961-4b79-9f35-e609870b21a7)
 
-![image](https://github.com/user-attachments/assets/865ebf67-40b8-4c1e-9b4b-e9edf394b114)
+![Screenshot 2024-11-14 020554](https://github.com/user-attachments/assets/466a3315-a050-48cd-ae3e-30333074934c)
 
 </details>
 
