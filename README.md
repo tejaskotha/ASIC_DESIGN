@@ -4078,7 +4078,7 @@ Rise transition time: time(slew_high_rise_thr) - time(slew_low_rise_thr)
    magic -T sky130A.tech sky130_inv.mag & 
    ```
 
-   ![Screenshot from 2024-11-12 23-41-52](https://github.com/user-attachments/assets/7a9892ee-2b6f-4b28-98e1-b0f55c74fc26)
+   ![Screenshot from 2024-11-13 21-34-06](https://github.com/user-attachments/assets/ce20229c-5821-426e-ba3b-d5deb120ad22)
 
 #### CMOS Fabrication Process (16 Masks)
 
@@ -4118,15 +4118,12 @@ Rise transition time: time(slew_high_rise_thr) - time(slew_low_rise_thr)
 
 #### Inverter Layout
 
-![Screenshot from 2024-11-12 23-54-13](https://github.com/user-attachments/assets/2a56754f-c532-49fd-9b5b-fb856f12012a)
+![Screenshot from 2024-11-13 21-36-00](https://github.com/user-attachments/assets/0ff8ac7b-c800-4f5e-b4dc-83fb73d00f5f)
+![Screenshot from 2024-11-13 21-36-27](https://github.com/user-attachments/assets/c425b090-c45f-430b-ae86-5de1bf873ee5)
+![Screenshot from 2024-11-13 21-37-33](https://github.com/user-attachments/assets/8dcaded6-8da0-4e44-8b2b-eaecdb0309d8)
+![Screenshot from 2024-11-13 21-38-31](https://github.com/user-attachments/assets/6cbefaaf-cfaf-4674-969c-df8849184142)
+![Screenshot from 2024-11-13 21-39-45](https://github.com/user-attachments/assets/5d2cb901-47d6-4ae9-b7b0-03b131023d9a)
 
-![Screenshot from 2024-11-12 23-54-26](https://github.com/user-attachments/assets/7674039b-6ed1-4ed1-9897-902f042e7096)
-
-![Screenshot from 2024-11-12 23-54-39](https://github.com/user-attachments/assets/7d601e97-0fd2-458a-908f-90a123c57d53)
-
-![Screenshot from 2024-11-12 23-55-26](https://github.com/user-attachments/assets/1445b939-6717-4fb0-8ff4-7a4edb397fbd)
-
-![Screenshot from 2024-11-12 23-55-53](https://github.com/user-attachments/assets/da582617-e15b-47c5-b1f5-bd0777e9461e)
 
 #### SPICE Extraction with Magic
 
@@ -4137,14 +4134,14 @@ extract all
 ext2spice cthresh 0 rthresh 0 
 ext2spice 
 ```
+![Screenshot from 2024-11-13 21-43-08](https://github.com/user-attachments/assets/b33f81f7-2d5e-4f30-9337-59ac5ff2ff0c)
 
-![Screenshot from 2024-11-13 00-06-58](https://github.com/user-attachments/assets/da8b3fa8-5e39-480e-a472-58a994479b1a)
+
 
 #### Modifying SPICE File for Transient Analysis
 
-![Screenshot from 2024-11-13 00-07-35](https://github.com/user-attachments/assets/caa04964-e21d-49b0-9f7b-4c76b94fda3c)
+![Screenshot from 2024-11-13 21-44-23](https://github.com/user-attachments/assets/c5f6bce9-1cbe-4e11-b8a8-8feb45e09a50)
 
-![Screenshot from 2024-11-13 00-07-42](https://github.com/user-attachments/assets/0e09dbd7-2872-48c8-981a-b9ab25284ab6)
 
 Edit `sky130_inv.spice`:
 ```
@@ -4175,9 +4172,9 @@ To simulate:
 ngspice sky130_inv.spice 
 plot y vs time a 
 ```
-![Screenshot from 2024-11-13 00-12-43](https://github.com/user-attachments/assets/86b19c94-3ce9-4e95-8aa3-6833c976202e)
+![Screenshot from 2024-11-13 21-46-55](https://github.com/user-attachments/assets/75cf5a1a-d636-40b4-a199-d40885e60194)
 
-![Screenshot from 2024-11-13 00-13-12](https://github.com/user-attachments/assets/defbf5aa-4975-4f56-bcf1-af4b032145fd)
+![Screenshot from 2024-11-13 21-47-27](https://github.com/user-attachments/assets/b78c70b1-f1e6-4fcb-ade0-3726f13ee0bf)
 
 
 #### Characterizing Slew Rate and Propagation Delay
@@ -4206,10 +4203,10 @@ cd drc_tests
 gvim .magicrc 
 magic -d XR & 
 ```
+![Screenshot from 2024-11-13 21-50-40](https://github.com/user-attachments/assets/5fff925d-1703-4b76-baf0-2c8efb2106d1)
+![Screenshot from 2024-11-13 21-53-34](https://github.com/user-attachments/assets/7865de64-4014-4138-8473-6b321402f489)
 
-![Screenshot from 2024-11-13 00-18-20](https://github.com/user-attachments/assets/421d67f3-8c6e-46b8-9af5-df1339da4c91)
 
-![Screenshot from 2024-11-13 00-21-58](https://github.com/user-attachments/assets/dc4f6182-faba-4842-a6cb-b1c8f35bb9ae)
 
 Run DRC commands:
 ``` 
@@ -4217,10 +4214,10 @@ tech load sky130A.tech
 drc check 
 drc why 
 ```
+![Screenshot from 2024-11-13 22-12-46](https://github.com/user-attachments/assets/e1f01c42-a475-4fea-a82e-95de960b0e9f)
 
-![Screenshot from 2024-11-13 00-33-24](https://github.com/user-attachments/assets/b99c626f-6e9f-4312-a934-31b964dc1a5c)
+![Screenshot from 2024-11-13 22-14-41](https://github.com/user-attachments/assets/0326f016-570f-403a-a8b2-0ce83f7d7a0a)
 
-![Screenshot from 2024-11-13 00-35-16](https://github.com/user-attachments/assets/fe5c1e08-92e6-46b5-9791-34731fd28a46)
 
 <img width="805" alt="Screenshot 2024-11-13 at 12 38 16 AM" src="https://github.com/user-attachments/assets/ddccab54-9579-42a6-80e2-a4b74dc21eea">
 
