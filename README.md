@@ -3905,7 +3905,7 @@ run_floorplan
 Then, in a new terminal, access the floorplan file as follows:
 
 ```
-cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-28/results/floorplan
+cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_13-50/results/floorplan
 gedit picorv32a.floorplan.def
 ```
 ![Screenshot 2024-11-13 193056](https://github.com/user-attachments/assets/fc55d2a8-4fe2-4415-9773-f04c9d3f65c4)
