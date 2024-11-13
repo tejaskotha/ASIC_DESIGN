@@ -3898,9 +3898,9 @@ run_synthesis
 run_floorplan
 ```
 
-![6](https://github.com/user-attachments/assets/45b7ab86-7a1a-409b-8512-1faca81e8f3b)
+![Screenshot 2024-11-13 192356](https://github.com/user-attachments/assets/f676b6cd-1a50-45fd-b8ad-8bbf41ffdcf4)
 
-![7](https://github.com/user-attachments/assets/0337802f-8d1d-4f40-923e-ec21cd5dcf91)
+![Screenshot 2024-11-13 192454](https://github.com/user-attachments/assets/4fcabc84-5242-4f85-b1ac-51707d75f126)
 
 Then, in a new terminal, access the floorplan file as follows:
 
@@ -3908,7 +3908,8 @@ Then, in a new terminal, access the floorplan file as follows:
 cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-28/results/floorplan
 gedit picorv32a.floorplan.def
 ```
-![8](https://github.com/user-attachments/assets/4e392782-99bb-4dfb-8126-09e68f33bf2f)
+![Screenshot 2024-11-13 193056](https://github.com/user-attachments/assets/fc55d2a8-4fe2-4415-9773-f04c9d3f65c4)
+
 
 According to the floorplan definitions:
 
