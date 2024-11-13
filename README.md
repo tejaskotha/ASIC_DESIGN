@@ -3926,19 +3926,22 @@ To view the floorplan in Magic:
 cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-28/results/floorplan/
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.floorplan.def &
 ```
-![9](https://github.com/user-attachments/assets/d9840e47-8674-4907-aaee-626c976c2180)
+![Screenshot from 2024-11-13 19-45-37](https://github.com/user-attachments/assets/c1c1fbd9-6e30-48c9-9b5f-abc1d2e464e3)
+
 
 
 ### **Decap and Tap Cells**
 
 Decap cells and tap cells are placed to manage power delivery and maintain electrical connectivity across the chip.
 
-![91](https://github.com/user-attachments/assets/7f8e09de-ac57-4f8e-83bd-1d2b556f0737)
+![Screenshot from 2024-11-13 19-57-18](https://github.com/user-attachments/assets/40769f01-c69e-4821-9290-08e36ef56f8c)
+
 
 
 ### **Unplaced Standard Cells at Origin**
+![Screenshot from 2024-11-13 19-58-42](https://github.com/user-attachments/assets/d5bb10fe-af43-48f5-83ec-980139d1a474)
 
-![92](https://github.com/user-attachments/assets/7e09a833-01b6-4e21-bf17-849ed2fc1b94)
+
 
 ```
 ./flow.tcl -interactive
@@ -3949,7 +3952,8 @@ run_floorplan
 run_placement
 ```
 
-![93](https://github.com/user-attachments/assets/70f206ca-ebc8-432f-8176-5a27fa4e3799)
+![Screenshot from 2024-11-13 20-02-15](https://github.com/user-attachments/assets/2722b2e9-9421-4848-8b03-d3f6a89436c9)
+
 
 View the placement in Magic with:
 
@@ -3957,10 +3961,10 @@ View the placement in Magic with:
 cd Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/11-11_16-56/results/placement/
 magic -T /home/vsduser/Desktop/work/tools/openlane_working_dir/pdks/sky130A/libs.tech/magic/sky130A.tech lef read ../../tmp/merged.lef def read picorv32a.placement.def &
 ```
+![Screenshot from 2024-11-13 20-03-43](https://github.com/user-attachments/assets/f73efee0-dfb2-403f-ab01-cdf582892110)
 
-![94](https://github.com/user-attachments/assets/ea69e54b-2497-4ecc-952e-195cc10be485)
+![Screenshot from 2024-11-13 20-05-07](https://github.com/user-attachments/assets/c71af639-9f87-45b6-9c4c-bb5c05ccf292)
 
-![95](https://github.com/user-attachments/assets/7d8fc7fd-385f-4289-af88-7456b2e51b30)
 
 ### **Cell Design and Characterization Flow**
 The library provides essential cell information, including various sizes, functionalities, and threshold voltages. A typical design flow includes:
