@@ -4720,10 +4720,10 @@ echo $::env(ROUTING_STRATEGY)
 run_routing
 ```
 Screenshots of routing run
+![Screenshot from 2024-11-14 22-11-21](https://github.com/user-attachments/assets/1cd5075a-950e-482b-b104-f30bc039d357)
+![Screenshot from 2024-11-14 22-12-59](https://github.com/user-attachments/assets/96b78e6c-1f91-4a1a-b135-3f8fd7200b4f)
 
-![Screenshot from 2024-11-14 00-25-50](https://github.com/user-attachments/assets/08b93b7f-bebe-482e-82ec-2cc0a751054b)
-![Screenshot from 2024-11-14 00-29-26](https://github.com/user-attachments/assets/e0cdb4e7-b24c-43e2-b7b6-107c961b786b)
-![Screenshot from 2024-11-14 00-34-39](https://github.com/user-attachments/assets/83684a88-d6be-471a-8b78-4a76bf2a2322)
+
 ![Screenshot from 2024-11-14 00-34-32](https://github.com/user-attachments/assets/57eabce7-2021-4977-8df9-2b2a5eeb7d9b)
 
 
@@ -4731,7 +4731,7 @@ Screenshots of routing run
 
 <img width="623" alt="Screenshot 2024-11-14 at 1 18 40 AM" src="https://github.com/user-attachments/assets/975f23b9-3129-40d0-915d-2a12fde2df7d">
 
-Screenshot of fast route guide present in openlane/designs/picorv32a/runs/13-11_18-24/tmp/routing directory
+Screenshot of fast route guide present in openlane/designs/picorv32a/runs/13-11_18-01/tmp/routing directory
 
 ![Screenshot from 2024-11-14 01-10-16](https://github.com/user-attachments/assets/34cdaa8c-3c9b-40f4-a146-cd09a6d637f2)
 
