@@ -4739,7 +4739,7 @@ Commands for SPEF extraction using external tool
 
 cd Desktop/work/tools/SPEF_EXTRACTOR
 
-python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-24/tmp/merged.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-01/results/routing/picorv32a.def
+python3 main.py /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-01/tmp/merged.lef /home/vsduser/Desktop/work/tools/openlane_working_dir/openlane/designs/picorv32a/runs/13-11_18-01/results/routing/picorv32a.def
 ```
 
 ## 4. Post-Route OpenSTA timing analysis with the extracted parasitics of the route.
