@@ -4816,14 +4816,14 @@ make gui_final
 ![Screenshot from 2024-11-26 11-44-41](https://github.com/user-attachments/assets/fdccfc5a-7f08-4e4f-b873-84cccaced0ec)
 
 
-**Understanding the directory structure:**
+**Directory Structure:**
 
 Automated RTL2GDS Flow for VSDBabySoC:
 
 - Create the folder `vsdbabysoc` in `OpenROAD-flow-scripts/flow/designs/sky130hd`.  
 - Copy the folders `gds`, `include`, `lef`, and `lib` from the `VSDBabySoC` folder on your system into this directory.  
 
-- Ensure the following files are present in each folder:  
+- Ensure that below files are present in each of the folders:  
   - **gds folder**: `avsddac.gds`, `avsdpll.gds`  
   - **include folder**: `sandpiper.vh`, `sandpiper_gen.vh`, `sp_default.vh`, `sp_verilog.vh`  
   - **lef folder**: `avsddac.lef`, `avsdpll.lef`  
@@ -4845,7 +4845,7 @@ cd flow
 
 ```
 
-### Commands for synthesis:
+### Synthesis Commands:
 
 ```
 make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk synth
@@ -4863,7 +4863,7 @@ make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk synth
 ![Screenshot from 2024-11-26 12-12-29](https://github.com/user-attachments/assets/429748b0-fe64-466b-8634-a8e25ce93f9d)
 
 
-### Commands for floorplan:
+### Floorplan Commands:
 
 ```
 make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk floorplan
@@ -4880,7 +4880,7 @@ make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk gui_floorplan
 ![Screenshot from 2024-11-26 12-18-44](https://github.com/user-attachments/assets/b9b78a91-c21c-4feb-ab4c-0898ec54c709)
 
 
-### Commands for Placement:
+### Placement Commands:
 
 ```
 make DESIGN_CONFIG=./designs/sky130hd/vsdbabysoc/config.mk place
