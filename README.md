@@ -4849,10 +4849,10 @@ Follow the steps below to create and prepare the vsdbabysoc directory within the
 		- avsddac.lib
 		- avsdpll.lib
 - **Step 4**: Copy Constraints and Configuration Files
-	Copy the constraints file from the VSDBabySoC directory into the vsdbabysoc directory:
+	- Copy the constraints file from the VSDBabySoC directory into the vsdbabysoc directory:
 		- File: **vsdbabysoc_synthesis.sdc**
-	Additionally, copy these configuration files into the same directory:
-	Files:
+	- Additionally, copy these configuration files into the same directory:
+	- Files:
 		- macro.cfg
 		- pin_order.cfg
 
