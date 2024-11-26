@@ -4818,19 +4818,44 @@ make gui_final
 
 **Directory Structure:**
 
-Automated RTL2GDS Flow for VSDBabySoC:
+Instructions for Setting Up vsdbabysoc Directory
+Follow the steps below to create and prepare the vsdbabysoc directory within the OpenROAD-flow-scripts/flow/designs/sky130hd path.
+- **Step 1**: Create the Directory
+	- Create a new folder named vsdbabysoc in the following path:
+   ```
+       OpenROAD-flow-scripts/flow/designs/sky130hd
+   ```
 
-- Create the folder `vsdbabysoc` in `OpenROAD-flow-scripts/flow/designs/sky130hd`.  
-- Copy the folders `gds`, `include`, `lef`, and `lib` from the `VSDBabySoC` folder on your system into this directory.  
+- **Step 2**: Copy Required Folders
+  	- Copy the following folders from the VSDBabySoC directory on your system into the newly created vsdbabysoc directory:
+		- gds
+		- include
+		- lef
+		- lib
+- **Step 3**: Verify Folder Contents
+ 	- Ensure that each of the copied folders contains the specified files:
+	- **gds folder**:
+		- avsddac.gds
+		- avsdpll.gds
+	- **include folder**:
+		- sandpiper.vh
+		- sandpiper_gen.vh
+		- sp_default.vh
+		- sp_verilog.vh
+	- **lef folder**:
+		- avsddac.lef
+		- avsdpll.lef
+	- **lib folder**:
+		- avsddac.lib
+		- avsdpll.lib
+- **Step 4**: Copy Constraints and Configuration Files
+	Copy the constraints file from the VSDBabySoC directory into the vsdbabysoc directory:
+		- File: **vsdbabysoc_synthesis.sdc**
+	Additionally, copy these configuration files into the same directory:
+	Files:
+		- macro.cfg
+		- pin_order.cfg
 
-- Ensure that below files are present in each of the folders:  
-  - **gds folder**: `avsddac.gds`, `avsdpll.gds`  
-  - **include folder**: `sandpiper.vh`, `sandpiper_gen.vh`, `sp_default.vh`, `sp_verilog.vh`  
-  - **lef folder**: `avsddac.lef`, `avsdpll.lef`  
-  - **lib folder**: `avsddac.lib`, `avsdpll.lib`  
-
-- Copy the constraints file `vsdbabysoc_synthesis.sdc` from the `VSDBabySoC` folder into the `vsdbabysoc` directory.  
-- Copy the files `macro.cfg` and `pin_order.cfg` from the `VSDBabySoC` folder into the same directory.  
 
 
 Now run the following commands in terminal:
